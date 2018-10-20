@@ -1,0 +1,43 @@
+EB101,Cálculo I,6	                                  ;n
+EB102,Geometria Analítica e Álgebra Linear,6          ;n
+SI010,Estrutura de Dados II,4                         ;si201
+SI100,Algoritmos e Programação de Computadores I,4    ;n
+SI102,Seminários I,2                                  ;n
+SI200,Algoritmos e Programação de Computadores II,4   ;si100
+SI201,Estrutura de Dados I,4                          ;si100
+SI202,Resolução de Problemas I,4                      ;si101/si100
+SI300,Programação Orientada a Objetos I,4             ;si100
+SI304,Engenharia de Software II,4                     ;st266
+SI305,Análise de Sistemas de Informação I,4           ;si300 tt106
+SI400,Programação Orientada a Objetos II,4            ;si300
+SI401,Programação para a Web,4                        ;si300 *si201
+SI404,Introdução a Interfaces Humano-Computador,2     ;st266
+SI405,Análise de Sistemas de Informação II,4          ;si305
+SI700,Programação para Dispositivos Móveis,4          ;*si201 si400
+SI703,Governança e Planejamento Estratégico de TI,2   ;tt350
+SI704,Seminários II,2                                 ;aa450
+SI800,Empreendedorismo e Inovação,2                   ;aa450
+ST008,Metodologia do Trabalho Científico,2            ;n
+ST096,Ciência, Tecnologia e Sociedade,2               ;aa435
+ST266,Engenharia de Software I,2                      ;tt130/si100
+ST562,Estruturas de Arquivos,4                        ;st364/si201
+ST567,Banco de Dados I,4                              ;st363/si201
+ST568,Redes de Comunicação I,4                        ;tt106
+ST765,Computação Gráfica,4                            ;ST364 TT102/ SI201 SI221/ EB102 SI201 
+ST767,Banco de Dados II,4                             ;st567
+TT060,Gestão de Projetos,4                            ;st266
+TT106,Organização e Arquitetura de Computadores,4     ;n
+TT304,Sistemas Operacionais,4                         ;tt106
+TT350,Administração de Empresas,4                     ;n
+EI---,Qualquer disciplina com código EI--,            ;????
+SI901,Iniciação Científica I,10                       ;aa200
+SI902,Iniciação Científica II,10                      ;aa200
+SI903,Iniciação Tecnológica I,10                      ;aa200
+SI904,Iniciação Tecnológica II,10                     ;aa200
+SI905,Monitoria I,5                                   ;aa200 aa410
+SI906,Monitoria II,5                                  ;aa200 aa410 si905
+SI909,Atividades Complementares,10                    ;aa200
+SI912,Trabalho de Conclusão de Curso I,6              ;aa465
+SI913,Trabalho de Conclusão de Curso II,6             ;si912
+SI914,Estágio em Computação I,6                       ;aa465
+SI915,Estágio em Computação II,6                      ;si914
