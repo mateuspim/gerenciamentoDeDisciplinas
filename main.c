@@ -71,9 +71,6 @@ int fazerLogin()
 	//fgets(ps,50,stdin);
 	scanf("%s",&ps);
 	
-	printf("%s,%s\n\n",ls,ps);
-	sleep(3);
-	
 	char n[100],l[50],s[50];
 	int ra;
 	
@@ -81,12 +78,10 @@ int fazerLogin()
 	
 	fp = fopen("Alunos.txt","r");
 	
-	while (fscanf(fp,"%d,%s, %s, %s",&ra,n,l,s)!=EOF)
+	while (fscanf(fp,"%d,%s ,%s ,%s",&ra,n,l,s)!=EOF)
 	{
-		
-		printf("%s - %s,%s\n\n",n,l,s);
-		sleep(3);
-		if (l==ls && s==ps)
+		printf("%s - %s - %s\n",n,l,s);		
+		if (strcmp(l,ls)==0 && strcmp(s,ps)==0)
 		{
 			fclose(fp);
 			return 0;
