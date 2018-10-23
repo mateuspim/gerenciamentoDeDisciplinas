@@ -82,9 +82,8 @@ int fazerLogin()
 		return 1;
 	}
 	
-	while (fscanf(fp,"%d,%s ,%s ,%s",&ra,nome,loginArquivo,senhaArquivo)!=EOF)
-	{
-		printf("%s - %s - %s\n",nome,loginArquivo,senhaArquivo);		
+	while (fscanf(fp,"%d,%[^,] ,%[^,] ,%[^\n]",&ra,nome,loginArquivo,senhaArquivo)!=EOF)
+	{		
 		if (strcmp(loginArquivo,login)==0 && strcmp(senhaArquivo,senha)==0)
 		{
 			fclose(fp);
