@@ -62,26 +62,30 @@ void cadastroAluno()
 
 int fazerLogin()
 {
-	char ls[50],ps[50];
+	char login[50],senha[50];
 	
 	printf("Digite o usuario: ");
-	//fgets(ls,50,stdin);
-	scanf("%s",&ls);
+	//fgets(login,50,stdin);
+	scanf("%s",login);
 	printf("Digite a senha: "); 
-	//fgets(ps,50,stdin);
-	scanf("%s",&ps);
+	//fgets(senha,50,stdin);
+	scanf("%s",senha);
 	
-	char n[100],l[50],s[50];
+	char nome[100],loginArquivo[50],senhaArquivo[50];
 	int ra;
 	
 	FILE *fp;
 	
 	fp = fopen("Alunos.txt","r");
+	if(fp == NULL){
+		printf("Não foi possivel encontrar o arquivo!\n");
+		return 1;
+	}
 	
-	while (fscanf(fp,"%d,%s ,%s ,%s",&ra,n,l,s)!=EOF)
+	while (fscanf(fp,"%d,%s ,%s ,%s",&ra,nome,loginArquivo,senhaArquivo)!=EOF)
 	{
-		printf("%s - %s - %s\n",n,l,s);		
-		if (strcmp(l,ls)==0 && strcmp(s,ps)==0)
+		printf("%s - %s - %s\n",nome,loginArquivo,senhaArquivo);		
+		if (strcmp(loginArquivo,login)==0 && strcmp(senhaArquivo,senha)==0)
 		{
 			fclose(fp);
 			return 0;
