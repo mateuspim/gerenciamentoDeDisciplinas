@@ -7,20 +7,26 @@
 #include "entrega2.h"
 //#include "entrega3.h"
 
+
+
 void menu();
+
+
 
 int main (int argc, char * argv)
 {
 	int op, erro;
-    /*
+    usuarioLogado user;
+    
 	do
 	{
-		erro = fazerLogin();
+		erro = fazerLogin(&user);
 		//sleep(3);
 	}while(erro!=0);
-    */
+    
 	do
 	{
+        printf("Usuario logado -> RA: %ld   Login: %s\n",user.ra,user.login);
 		menu();
 		scanf("%d",&op);
         getchar();
@@ -33,6 +39,7 @@ int main (int argc, char * argv)
                 verificaDisciplina();
 				break;
 			case 3:
+                menuMatricula(&user);
 				break;
 			case 4:
 				break;

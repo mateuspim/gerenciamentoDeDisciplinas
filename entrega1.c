@@ -126,16 +126,14 @@ void cadastroAluno()
 	fclose(fp);
 }
 
-int fazerLogin()
-{
-	char login[50],senha[50];
-	
+int fazerLogin(usuarioLogado * user)
+{	
 	printf("Digite o usuario: ");
-	fgets(login,50,stdin);
-	limpaChar(login);
+	fgets(user->login,50,stdin);
+	limpaChar(user->login);
 	printf("Digite a senha: "); 
-	fgets(senha,50,stdin);
-	limpaChar(senha);
+	fgets(user->senha,50,stdin);
+	limpaChar(user->senha);
 
 	char nome[100],loginArquivo[50],senhaArquivo[50];
 	long int ra;
@@ -149,9 +147,9 @@ int fazerLogin()
 		return 1;
 	}
 	
-	while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%[^\n]",&ra,nome,loginArquivo,senhaArquivo)!=EOF)
+	while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%[^\n]",&user->ra,nome,loginArquivo,senhaArquivo)!=EOF)
 	{		
-		if (strcmp(loginArquivo,login)==0 && strcmp(senhaArquivo,senha)==0)
+		if (strcmp(loginArquivo,user->login)==0 && strcmp(senhaArquivo,user->senha)==0)
 		{
 			fclose(fp);
 			return 0;
