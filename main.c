@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "entrega1.h"
-//#include "entrega2.h"
+#include "entrega2.h"
 //#include "entrega3.h"
 
 void menu();
@@ -12,12 +12,13 @@ void menu();
 int main (int argc, char * argv)
 {
 	int op, erro;
+    /*
 	do
 	{
 		erro = fazerLogin();
 		//sleep(3);
 	}while(erro!=0);
-	FILE *fp;
+    */
 	do
 	{
 		menu();
@@ -29,6 +30,7 @@ int main (int argc, char * argv)
 				cadastroAluno();
 				break;
 			case 2:
+                verificaDisciplina();
 				break;
 			case 3:
 				break;
