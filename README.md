@@ -13,9 +13,6 @@ Este projeto consiste na elaboração de um sistema responsável por gerenciar a
 Para compilar e executar o projeto, é necessário instalar o gcc:<br>
 <code>sudo apt install gcc</code><br><br>
 Após a instalação do gcc, compile o programa com:<br>
-<code>gcc -c entrega1.c</code><br><br>
-<code>gcc -c entrega2.c</code><br><br>
-<code>gcc -c main.c</code><br><br>
-<code>gcc entrega1.o entrega2.o main.o -o main.exe</code><br><br>
-E, por fim, execute o programa: <br>
-<code>./main.exe</code>
+<code>sh compile</code><br><br>
+Caso necessário, remova posteriormente os arquivos ".o" criados pela compilação:<br>
+<code>sh removeTemp</code><br><br>
