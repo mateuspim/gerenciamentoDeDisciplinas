@@ -25,8 +25,8 @@ int main (int argc, char * argv)
 	}while(erro!=0);
     
 	do
-	{
-        printf("Usuario logado -> RA: %ld   Login: %s\n",user.ra,user.login);
+	{	
+        printf("\nUsuario logado -> RA: %ld   Login: %s\n\n",user.ra,user.login);
 		menu();
 		scanf("%d",&op);
         getchar();
@@ -64,5 +64,5 @@ puts("3 -> Realizar Matricula ");
 puts("4 -> Atualizar Nota e Falta");
 puts("5 -> Consultar Historico do Aluno");
 puts("6 -> Sair.");
-printf("Digite a opcao desejada: ");
+printf("\nDigite a opcao desejada: ");
 }

@@ -13,6 +13,7 @@ void verificaDisciplina()
 	char disciplina[10],nomeDisciplina[100];
 	int creditos;
 
+	printf("\nCONSULTA DE DISCIPLINAS\n");
 	printf("Digite a disciplina: ");
 	fgets(disciplina,10,stdin);
 	limpaChar(disciplina);
@@ -103,7 +104,7 @@ void cadastroAluno()
 	{
 		puts("ERRO AO ABRIR ARQUIVO Alunos.txt");
 	}
-	
+	printf("\nCADASTRO DE ALUNOS\n");
 	printf("Digite o RA do Aluno: ");
 	scanf("%ld",&ra);
 	getchar();
@@ -118,6 +119,8 @@ void cadastroAluno()
     limpaChar(senha);	
 
 	fprintf(fp,"%ld,%s,%s,%s\n",ra,nome,login,senha);
+
+	printf("\nALUNO CADASTRADO COM SUCESSO!\n");
 	
 	fclose(fp);
 }
