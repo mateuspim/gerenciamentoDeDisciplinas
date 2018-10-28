@@ -44,7 +44,7 @@ int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 		return 2;
 	}
 
-	while (fscanf(fp,"%[^,],%[^,],%d\n",idD,nomeD,&creditos)!=EOF)
+	while (fscanf(fp,"%[^,],%[^,],%d\n",idD,nomeD,creditos)!=EOF)
 	{	
 		if (strcmp(idDisciplina,idD)==0)
 		{
@@ -89,8 +89,6 @@ void consultaPrerequisito(char *idD)
 		}
 	}
 
-	
-
 	fclose(fp);
 }
 
@@ -99,7 +97,12 @@ void cadastroAluno()
 	long int ra;
 	char nome[100],login[50],senha[50];
 	
-	FILE *fp;
+	FILE *fp = fopen(fAlunos,"a");
+		
+	if (fp == NULL)
+	{
+		puts("ERRO AO ABRIR ARQUIVO Alunos.txt");
+	}
 	
 	printf("Digite o RA do Aluno: ");
 	scanf("%ld",&ra);
@@ -112,16 +115,9 @@ void cadastroAluno()
     limpaChar(login);
 	printf("Digite a senha: ");
 	fgets(senha,50,stdin);
-    limpaChar(senha);
-	
-	fp = fopen(fAlunos,"a");
-		
-		if (fp = NULL)
-        {
-			puts("ERRO AO ABRIR ARQUIVO Alunos.txt");
-        }
-        
-	fprintf(fp,"%ld,%s,%s,%s",ra,nome,login,senha);
+    limpaChar(senha);	
+
+	fprintf(fp,"%ld,%s,%s,%s\n",ra,nome,login,senha);
 	
 	fclose(fp);
 }
