@@ -3,8 +3,15 @@
 
 #define fAlunosD "AlunosDisciplinas.txt"
 
-void menuMatricula(void *user);
-int checkSemestre(int semestre,void *user);
-int realizarMatricula(char *disciplina);
+void menuMatricula();
+
+void inicializaDisciplina();
+
+void checkAlunosDisciplinas();
+int checkSemestre(int semestre);
+int checkDisciplina(char * idDisciplina);
+int checkPreRequisitos(char * idDisciplina);
+
+void realizarMatricula(int semestre);
 
 #endif 

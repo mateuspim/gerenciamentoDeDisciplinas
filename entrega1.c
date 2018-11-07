@@ -75,26 +75,28 @@ void consultaPrerequisito(char *idD)
 	}
 
 	while (fscanf(fp,"%[^,],%[^\n]\n",idDisciplina,idRequisito)!=EOF)
-	{	
+	{
+		//printf("%s	%s",idDisciplina,idD);	
 		if (strcmp(idDisciplina,idD)==0 && idRequisito[0]!='n')
 		{
 			upperChar(idRequisito);
 			erro = consultaDisciplina(idRequisito,nomeRequisito,&creditos);
 			printf("Prerequisitos: %s - %s\n",idRequisito,nomeRequisito);
 		}
-
-		if (idRequisito[0]=='n')
+		else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
 		{
-			printf("Prerequisitos: Nenhum\n");
-			break;
-		}
+			printf("Prerequisitos: Nenhum\n");	
+		}		
 	}
+	
+		
 
 	fclose(fp);
 }
 
 void cadastroAluno()
 {
+	int erro = 3;
 	long int ra;
 	char nome[100],login[50],senha[50];
 	
@@ -104,10 +106,23 @@ void cadastroAluno()
 	{
 		puts("ERRO AO ABRIR ARQUIVO Alunos.txt");
 	}
+	else
+	{
+
 	printf("\nCADASTRO DE ALUNOS\n");
-	printf("Digite o RA do Aluno: ");
-	scanf("%ld",&ra);
-	getchar();
+	do
+	{
+
+		printf("Digite o RA do Aluno: ");
+		scanf("%ld",&ra);
+		getchar();
+
+		erro = verificaAluno(ra);
+
+			if (erro==1)
+				puts("RA ja cadastrado!");
+
+	}while(erro!=0);
 	printf("Digite o Nome do Aluno: ");
 	fgets(nome,100,stdin);
     limpaChar(nome);
@@ -122,10 +137,29 @@ void cadastroAluno()
 
 	printf("\nALUNO CADASTRADO COM SUCESSO!\n");
 	
+	}
 	fclose(fp);
 }
 
-int fazerLogin(usuarioLogado * user)
+int verificaAluno(long int ra)
+{
+	long int ras;
+	char buffer[200];
+	FILE *fp = fopen(fAlunos,"r");
+	
+	while(fscanf(fp,"%ld,%[^\n]",&ras,buffer)!=EOF)
+	{
+		if (ras==ra)
+			return 1;
+	}
+
+	return 0;
+	fclose(fp);	
+
+
+}
+
+int fazerLogin()
 {	
 	printf("Digite o usuario: ");
 	fgets(user->login,50,stdin);

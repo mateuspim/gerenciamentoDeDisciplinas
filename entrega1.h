@@ -11,6 +11,7 @@ char login[50];
 char senha[50];
 }usuarioLogado;
 
+usuarioLogado * user;
 
 //Funcoes de controle
 void limpaChar(char *v);
@@ -20,9 +21,10 @@ void verificaDisciplina();
 int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos);
 void consultaPrerequisito(char *idD);
 
-
+int verificaAluno(long int ra);
 void cadastroAluno();
-int fazerLogin(usuarioLogado * user);
+
+int fazerLogin();
 
 
 

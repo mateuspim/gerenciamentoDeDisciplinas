@@ -7,26 +7,22 @@
 #include "entrega2.h"
 //#include "entrega3.h"
 
-
-
 void menu();
-
-
 
 int main (int argc, char * argv)
 {
 	int op, erro;
-    usuarioLogado user;
+    
+	user = (usuarioLogado *) calloc(1,sizeof(usuarioLogado));
     
 	do
 	{
-		erro = fazerLogin(&user);
-		//sleep(3);
+		erro = fazerLogin(user);
 	}while(erro!=0);
     
 	do
 	{	
-        printf("\nUsuario logado -> RA: %ld   Login: %s\n\n",user.ra,user.login);
+        printf("\nUsuario logado -> RA: %ld   Login: %s\n\n",user->ra,user->login);
 		menu();
 		scanf("%d",&op);
         getchar();
@@ -39,7 +35,7 @@ int main (int argc, char * argv)
                 verificaDisciplina();
 				break;
 			case 3:
-                menuMatricula(&user);
+                menuMatricula();
 				break;
 			case 4:
 				break;
