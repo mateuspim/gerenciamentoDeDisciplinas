@@ -18,13 +18,13 @@ stDisciplina * novaD;
 void inicializaDisciplina()
 {
     free(novaD);
-    novaD = (stDisciplina *) calloc(1,sizeof(stDisciplina));
+    novaD = (stDisciplina *) calloc (1, sizeof(stDisciplina));
 }
 
 void menuMatricula()
 {
 
-    int semestre,erro,credTotal = 0,credito = 0;
+    int semestre,erro,credTotal = 0, credito = 0;
     char disciplina[10];
 
     //Inicializando struct disciplina para futuras verificacoes
@@ -36,22 +36,19 @@ void menuMatricula()
 
     do
     {
-    printf("Digite o semestre: ");
-    scanf("%d",&semestre);
-    getchar();
+        printf("Digite o semestre: ");
+        scanf("%d",&semestre);
+        getchar();
 
-    if (semestre > 0)
-        erro = checkSemestre(semestre);
-    
-    /*  erro = 0 -> aluno semestre valido
-        erro = 1 -> aluno semestre invalido
-        erro = 2 -> aluno n EXISTE
-    */
+        if (semestre > 0)
+            erro = checkSemestre(semestre);
+        
+        /*  erro = 0 -> aluno semestre valido
+            erro = 1 -> aluno semestre invalido
+            erro = 2 -> aluno n EXISTE
+        */
         if (erro==1 || semestre<0)
             puts("Semestre invalido!!");
-
-        //if (erro == 2)
-        // puts("Aluno nao matriculado anteriormente!!");
         
     }while(erro!=0);
 
@@ -213,18 +210,16 @@ void checkAlunosDisciplinas()
 
 int checkSemestre(int semestre)
 {
-
-    int ultSem =0,auxSem;
+    int ultSem = 0, auxSem;
     long int ra;
     char buffer[100];
 
     FILE *fp = fopen(fAlunosD,"r");
-
-        if (fp == NULL)
-        {
-            puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
-            return 3;
-        }
+    if (fp == NULL)
+    {
+        puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
+        return 3;
+    }
 
     //RA,CódigodaDisciplina,Semestre,Nota,Faltas
     while(fscanf(fp,"%ld,%[^,],%d,%[^,],%[^,\n]\n",&ra,buffer,&auxSem,buffer,buffer)!=EOF)
@@ -234,15 +229,11 @@ int checkSemestre(int semestre)
             if (ultSem<auxSem)
                 ultSem = auxSem;
         }
-
     }
 
     fclose(fp);
-
-    if(ultSem == 0) //Aluno nao cadastrado
-        return 2;
     
-    if(ultSem < semestre) //Semestre valido
+    if(ultSem == (semestre-1) || ultSem == semestre) //Semestre valido
         return 0;
     else   
         return 1;  //Semestre invalido
