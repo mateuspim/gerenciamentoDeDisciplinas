@@ -11,8 +11,8 @@ Este projeto consiste na elaboração de um sistema responsável por gerenciar a
 
 <b>COMPILAÇÃO:</b><br>
 Para compilar e executar o projeto, é necessário instalar o gcc:<br>
-<code>sudo apt install gcc</code><br><br>
+<kbd>$ sudo apt install gcc</kbd><br><br>
 Após a instalação do gcc, compile o programa com:<br>
-<code>sh compile</code><br><br>
+<kbd>$ sh compile</kbd><br><br>
 Caso necessário, remova posteriormente os arquivos ".o" criados pela compilação:<br>
-<code>sh removeTemp</code><br><br>
+<kbd>$ sh removeTemp</kbd><br><br>
