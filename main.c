@@ -55,7 +55,7 @@ int main (int argc, char * argv)
 void menu()
 {
 puts("1 -> Cadastro de Alunos");
-puts("2 -> Consultar de Disciplinas");
+puts("2 -> Consulta de Disciplinas");
 puts("3 -> Realizar Matricula ");
 puts("4 -> Atualizar Nota e Falta");
 puts("5 -> Consultar Historico do Aluno");

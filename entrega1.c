@@ -20,7 +20,6 @@ void verificaDisciplina()
 	upperChar(disciplina);	
 
 	erro = consultaDisciplina(disciplina,nomeDisciplina,&creditos);
-
 	if (erro == 1)
 		puts("Disciplina nao registrada ou inexistente");
 	else
@@ -36,7 +35,6 @@ int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 {
 	char idD[10],nomeD[100];
 	FILE *fp;
-
 	fp = fopen(fDisciplina,"r");
 
 	if(fp == NULL)
@@ -44,18 +42,15 @@ int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 		printf("Nao foi possivel encontrar o arquivo!\n");
 		return 2;
 	}
-
 	while (fscanf(fp,"%[^,],%[^,],%d\n",idD,nomeD,creditos)!=EOF)
 	{	
-		if (strcmp(idDisciplina,idD)==0)
+		if (strcmp(idDisciplina,idD) == 0)
 		{
 			strcpy(nomeDisciplina,nomeD);
 			fclose(fp);
 			return 0;
-		}
-		
+		}		
 	}
-	
 	fclose(fp);
 	return 1;
 
@@ -65,27 +60,30 @@ void consultaPrerequisito(char *idD)
 {
 	char idDisciplina[10],idRequisito[10],nomeRequisito[100];
 	int creditos = 0, erro;
-	FILE *fp;
 
+	FILE *fp;
 	fp = fopen(fRequisitos,"r");
 
 	if(fp == NULL)
 	{
 		printf("Nao foi possivel encontrar o arquivo!\n");
 	}
-
 	while (fscanf(fp,"%[^,],%[^\n]\n",idDisciplina,idRequisito)!=EOF)
 	{
-		//printf("%s	%s",idDisciplina,idD);	
 		if (strcmp(idDisciplina,idD)==0 && idRequisito[0]!='n')
-		{
+		{	
+			limpaChar(idRequisito);
 			upperChar(idRequisito);
-			erro = consultaDisciplina(idRequisito,nomeRequisito,&creditos);
-			printf("Prerequisitos: %s - %s\n",idRequisito,nomeRequisito);
+			erro = consultaDisciplina(idRequisito, nomeRequisito, &creditos);
+			if(erro == 0){
+				printf("Pre-requisito: %s - %s\n",idRequisito, nomeRequisito);
+			}else{
+				printf("Erro ao obter Pre-requisito!\n");
+			}
 		}
 		else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
 		{
-			printf("Prerequisitos: Nenhum\n");	
+			printf("Pre-requisito: Nenhum\n");
 		}		
 	}
 	
