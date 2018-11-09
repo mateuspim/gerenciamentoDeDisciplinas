@@ -7,7 +7,7 @@ void menuMatricula();
 
 void inicializaDisciplina();
 
-void checkAlunosDisciplinas();
+int checkAlunoDisciplinas(char *idRequisito);
 int checkSemestre(int semestre);
 int checkDisciplina(char * idDisciplina);
 int checkPreRequisitos(char * idDisciplina);
