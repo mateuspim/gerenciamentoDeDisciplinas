@@ -48,45 +48,49 @@ void menuAlterarNotaFalta()
         if(hasDisciplina==0)
             printf("\nAluno nao matriculado em nenhuma disciplina para o semestre selecionado\n\n");
 
-    }while(hasDisciplina==0);
+    }while(hasDisciplina==0 && semestre>0);
 
-    printf("\nDigite o codigo da disciplina que deseja fazer a alteracao: ");
-
-    fgets(disciplina,10,stdin);
-    limpaChar(disciplina);
-    upperChar(disciplina);
-
-    if (strcmp(disciplina,"XX000")!=0)
+    if (semestre>0)
     {
+    
+        printf("\nDigite o codigo da disciplina que deseja fazer a alteracao: ");
 
-        erro = verificaDisciplinaStruct(disciplina,semestre);
+        fgets(disciplina,10,stdin);
+        limpaChar(disciplina);
+        upperChar(disciplina);
 
-        if (erro == 0)
+        if (strcmp(disciplina,"XX000")!=0)
         {
+
+            erro = verificaDisciplinaStruct(disciplina,semestre);
+
+            if (erro == 0)
+            {
         
-            do
-            {
-                printf("\nNota: ");
-                scanf("%f",&nota);
-                getchar();    
+                do
+                {
+                    printf("\nNota: ");
+                    scanf("%f",&nota);
+                    getchar();    
 
-            }while(nota<0 || nota>10);
+                }while(nota<0 || nota>10);
 
-            do
-            {
-                printf("\nFalta (%): ");
-                scanf("%f",&falta);
-                getchar();    
+                do
+                {
+                    printf("\nFalta (%): ");
+                    scanf("%f",&falta);
+                    getchar();    
 
-            }while(falta<0 || falta>100);
+                }while(falta<0 || falta>100);
 
-            modifyDisciplinaStruct(disciplina,semestre,nota,falta);
-            persisteDisciplinaStruct();
+                modifyDisciplinaStruct(disciplina,semestre,nota,falta);
+                persisteDisciplinaStruct();
 
-            puts("\nAtualizacao realizada com sucesso\n");
+                puts("\nAtualizacao realizada com sucesso\n");
+            }
+            else
+                puts("\nDisciplina nao existente no semestre!");
         }
-        else
-            puts("\nDisciplina nao existente no semestre!");
     }    
 }
 
@@ -224,7 +228,7 @@ void showDisciplinas(int semestre,int *hasDisciplina)
             erro = consultaDisciplina(novaNTD[i].disciplina,nomeDisciplina,&cred);
 
             if (erro == 0)
-                printf("%s  -   %s  -   Nota: %0.2f  -   Falta:%0.2f\n",novaNTD[i].disciplina,nomeDisciplina,novaNTD[i].nota,novaNTD[i].faltas);  
+                printf("%s  -   %s  -   Nota: %0.2f    -   Falta:%0.2f\n",novaNTD[i].disciplina,nomeDisciplina,novaNTD[i].nota,novaNTD[i].faltas);  
         }
     }
 
