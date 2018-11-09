@@ -12,6 +12,7 @@ int checkSemestre(int semestre);
 int checkDisciplina(char * idDisciplina);
 int checkPreRequisitos(char * idDisciplina);
 
+void getDiscAnterior(int semestre);
 void realizarMatricula(int semestre);
 
 #endif 

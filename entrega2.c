@@ -9,6 +9,7 @@
 
 typedef struct disciplinas{
     int top;
+    int ini;
     int credTotal;
     char d[32][10]; // array de string para 32 disciplinas com 10 caracteres
 }stDisciplina;
@@ -18,13 +19,15 @@ stDisciplina * novaD;
 void inicializaDisciplina()
 {
     free(novaD);
-    novaD = (stDisciplina *) calloc (1, sizeof(stDisciplina));
+    novaD = (stDisciplina *) calloc(1,sizeof(stDisciplina));
 }
+
+
 
 void menuMatricula()
 {
 
-    int semestre,erro,credTotal = 0, credito = 0;
+    int semestre,erro,credTotal = 0,credito = 0;
     char disciplina[10];
 
     //Inicializando struct disciplina para futuras verificacoes
@@ -36,59 +39,44 @@ void menuMatricula()
 
     do
     {
-        printf("Digite o semestre: ");
-        scanf("%d",&semestre);
-        getchar();
+    printf("Digite o semestre: ");
+    scanf("%d",&semestre);
+    getchar();
 
-        if (semestre > 0)
-            erro = checkSemestre(semestre);
-        
-        /*  erro = 0 -> aluno semestre valido
-            erro = 1 -> aluno semestre invalido
-            erro = 2 -> aluno n EXISTE
-        */
+    if (semestre > 0)
+        erro = checkSemestre(semestre);
+    /*  
+        erro = 0 -> aluno semestre valido
+        erro = 1 -> aluno semestre invalido
+        erro = 2 -> aluno nao cadastrado anteriormente
+    */
         if (erro==1 || semestre<0)
             puts("Semestre invalido!!");
+
+        if (erro == 3)
+        {
+            getDiscAnterior(semestre);
+            erro =0;
+        }
+            
         
     }while(erro!=0);
 
+
+
     do
     {
+    
     printf("Digite a disciplina: ");
     fgets(disciplina,10,stdin);
     limpaChar(disciplina);
     upperChar(disciplina);
-
+    
     erro = checkDisciplina(disciplina);
-
     }while(strcmp(disciplina,"XX000")!=0);
 
     realizarMatricula(semestre);
     puts("Transaco efetuada com sucesso");
-}
-
-
-void realizarMatricula(int semestre)
-{
-    FILE *fp;
-
-	fp = fopen(fAlunosD,"a");
-
-	if(fp == NULL)
-	{
-		printf("Nao foi possivel encontrar o arquivo: %s!\n",fRequisitos);
-	}
-    else
-    {
-        for (int i=0;i<novaD->top;i++)
-        {   
-            //RA,CódigodaDisciplina,Semestre,Nota,Faltas
-            fprintf(fp,"%ld,%s,%d,0.0,0.0\n",user->ra,novaD->d[i],semestre);
-        }
-    }
-
-	
-	fclose(fp); 
 }
 
 int checkDisciplina(char * idDisciplina)
@@ -107,9 +95,9 @@ int checkDisciplina(char * idDisciplina)
         if (novaD->credTotal + creditos <=MAXCRED) //VERIFICACAO DOS CREDITOS
         {
             erro = 0;
-            for(int i = 0; i<MAXCRED;i++) // VERIFICACAO SE JA EXISTE A DISCIPLINA CADASTRADA
+            for(int i = 0; i<MAXCRED;i++) // VERIFICACAO SE JA EXISTE A DISCIPLINA CADASTRADA NA STRUCT
             {
-                //printf("%s  -   %s\n\n",novaD->d[i],idDisciplina);
+        
                 if (strcmp(novaD->d[i],idDisciplina)==0)
                 {
                     erro = 1;
@@ -121,22 +109,23 @@ int checkDisciplina(char * idDisciplina)
             if (erro == 0)
             {
 
-                erro = checkPreRequisitos(idDisciplina); // ainda em construcao
-                novaD->credTotal+=creditos;
+                //erro = checkPreRequisitos(idDisciplina); // ainda em construcao
                 
-                strcpy(novaD->d[novaD->top],idDisciplina);
-                novaD->top++;
-                printf("\nCreditos totais: %d  Disciplinas Cadastrasdas: %d   Ultima Disciplina: %s\n",novaD->credTotal,novaD->top,novaD->d[novaD->top]);
-
+                    if (erro == 0)
+                    {
+                        printf("\nteste:%s\n",novaD->d[novaD->top-1]);
+                        novaD->credTotal+=creditos;
+                
+                        strcpy(novaD->d[novaD->top],idDisciplina);
+                        novaD->top++;
+                        printf("\nCreditos totais: %d  Disciplinas Cadastrasdas: %d   Ultima Disciplina: %s\n",novaD->credTotal,novaD->top,novaD->d[novaD->top]);
+                    }
             }
             else
             {
                 puts("DISCIPLINA JA INSCRITA!");
             }              
-        }
-            
-
-        
+        }           
         else
         {
             puts("Cadastro de disciplina ultrassa o max de creditos por semestre!");
@@ -146,7 +135,6 @@ int checkDisciplina(char * idDisciplina)
     return 0;
 
 }
-
 int checkPreRequisitos(char * idDisciplina)
 {
     // ainda em construcao
@@ -161,23 +149,21 @@ int checkPreRequisitos(char * idDisciplina)
 	{
 		printf("Nao foi possivel encontrar o arquivo!\n");
 	}
-
-	while (fscanf(fp,"%[^,],%[^\n]\n",idD,idRequisito)!=EOF)
-	{
-		//printf("%s	%s",idDisciplina,idD);	
-		if (strcmp(idD,idD)==0 && idRequisito[0]!='n')
-		{
-			upperChar(idRequisito);
-			//printf("Prerequisitos: %s - %s\n",idRequisito,nomeRequisito);
-            //erro = 
-
-		}
-		else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
-		{
-			return 0;
-		}		
+    else
+    {
+	    while (fscanf(fp,"%[^,],%s\n",idDisciplina,idRequisito)!=EOF)
+	    {
+			
+		    if (strcmp(idD,idD)==0 && idRequisito[0]!='n')
+		    {
+			    upperChar(idRequisito);
+		    }
+		    else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
+		    {
+			    return 0;
+		    }		
 	}
-	
+	}
 	fclose(fp);   
 
 }
@@ -198,23 +184,71 @@ void checkAlunosDisciplinas()
             puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
             //return 3;
     }
-
-    //RA,CódigodaDisciplina,Semestre,Nota,Faltas
-    while(fscanf(fp,"%ld,%[^,],%d,%[^,],%[^,\n]\n",&ra,buffer,&auxSem,buffer,buffer)!=EOF)
+    else
     {
+
+        //RA,CódigodaDisciplina,Semestre,Nota,Faltas
+        while(fscanf(fp,"%ld,%[^,],%d,%[^,],%[^,\n]\n",&ra,buffer,&auxSem,buffer,buffer)!=EOF)
+        {
         
+        }
+    }
+    fclose(fp);
+}
+
+// Funcao para pegar as disciplinas anteriores do semestre
+void getDiscAnterior(int semestre)
+{
+    int erro = 0,creditos = 0,auxSem;
+    char disciplina[10];//idDisciplina[10];
+    char buffer[100];
+    long int ra;
+
+    FILE *fp;
+
+    fp = fopen(fAlunosD,"r");
+
+    if (fp==NULL)
+    {
+        puts("ERRO AO ABRIR O ARQUIVO: AlunosDisciplinas");
+    }
+    else
+    {
+        //RA,CódigodaDisciplina,Semestre,Nota,Faltas
+        while(fscanf(fp,"%ld,%[^,],%d,%s\n",&ra,disciplina,&auxSem,buffer)!=EOF)
+        {     
+            if(ra==user->ra && auxSem==semestre)
+            {
+                //strcpy(idDisciplina,disciplina);
+                erro = consultaDisciplina(disciplina,buffer,&creditos);
+
+                if (erro==1)
+                {
+
+                }
+                else
+                {
+                    strcpy(novaD->d[novaD->top++],disciplina);
+                    novaD->credTotal += creditos;
+                }
+            }
+        }
+        novaD->ini = novaD->top;
     }
 
     fclose(fp);
 }
 
+//Funcao para checkagem do semestre
 int checkSemestre(int semestre)
 {
-    int ultSem = 0, auxSem;
+
+    int ultSem = 0,auxSem;
     long int ra;
     char buffer[100];
 
     FILE *fp = fopen(fAlunosD,"r");
+
     if (fp == NULL)
     {
         puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
@@ -222,20 +256,51 @@ int checkSemestre(int semestre)
     }
 
     //RA,CódigodaDisciplina,Semestre,Nota,Faltas
-    while(fscanf(fp,"%ld,%[^,],%d,%[^,],%[^,\n]\n",&ra,buffer,&auxSem,buffer,buffer)!=EOF)
+    while(fscanf(fp,"%ld,%[^,],%d,%s\n",&ra,buffer,&auxSem,buffer)!=EOF)
     {     
         if (ra==user->ra)
         {
-            if (ultSem<auxSem)
+            if (ultSem<=auxSem)
                 ultSem = auxSem;
         }
+
     }
 
     fclose(fp);
+
+    if(ultSem == 0) //Aluno nao cadastrado
+        return 2;
     
-    if(ultSem == (semestre-1) || ultSem == semestre) //Semestre valido
+    if(ultSem == semestre)  //Politica para cadastrar as disciplinas anteriores
+        return 3;           //do semestre atual
+    
+    if(ultSem < semestre) //Semestre valido
         return 0;
     else   
         return 1;  //Semestre invalido
 
+}
+
+//Funcao para realizar matricula final 
+void realizarMatricula(int semestre)
+{
+    FILE *fp;
+
+	fp = fopen(fAlunosD,"a");
+
+	if(fp == NULL)
+	{
+		printf("Nao foi possivel encontrar o arquivo: %s!\n",fRequisitos);
+	}
+    else
+    {
+        for (int i=novaD->ini;i<novaD->top;i++)
+        {   
+            //RA,CódigodaDisciplina,Semestre,Nota,Faltas
+            fprintf(fp,"%ld,%s,%d,0.0,0.0\n",user->ra,novaD->d[i],semestre);
+        }
+    }
+
+	
+	fclose(fp); 
 }
