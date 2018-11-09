@@ -34,6 +34,7 @@ void verificaDisciplina()
 
 int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 {
+
 	char idD[10],nomeD[100];
 	FILE *fp;
 
@@ -81,7 +82,7 @@ void consultaPrerequisito(char *idD)
 			{				
 				upperChar(idRequisito);
 				erro = consultaDisciplina(idRequisito,nomeRequisito,&creditos);
-				printf("Prerequisitos: %s - %s\n",idRequisito,nomeRequisito);
+				printf("Pre-requisitos: %s - %s\n",idRequisito,nomeRequisito);
 			}
 			else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
 			{
@@ -134,6 +135,7 @@ void cadastroAluno()
     limpaChar(senha);	
 
 	fprintf(fp,"%ld,%s,%s,%s\n",ra,nome,login,senha);
+	fflush(fp);
 
 	printf("\nALUNO CADASTRADO COM SUCESSO!\n");
 	

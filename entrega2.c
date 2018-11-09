@@ -22,8 +22,6 @@ void inicializaDisciplina()
     novaD = (stDisciplina *) calloc(1,sizeof(stDisciplina));
 }
 
-
-
 void menuMatricula()
 {
 
@@ -67,7 +65,7 @@ void menuMatricula()
     do
     {
     
-    printf("Digite a disciplina: ");
+    printf("\nDigite a disciplina: ");
     fgets(disciplina,10,stdin);
     limpaChar(disciplina);
     upperChar(disciplina);
@@ -113,12 +111,11 @@ int checkDisciplina(char * idDisciplina)
                 
                     if (erro == 0)
                     {
-                        printf("\nteste:%s\n",novaD->d[novaD->top-1]);
                         novaD->credTotal+=creditos;
                 
                         strcpy(novaD->d[novaD->top],idDisciplina);
                         novaD->top++;
-                        printf("\nCreditos totais: %d  Disciplinas Cadastrasdas: %d   Ultima Disciplina: %s\n",novaD->credTotal,novaD->top,novaD->d[novaD->top]);
+                        printf("\nCreditos totais: %d  Disciplinas Cadastradas: %d   Ultima Disciplina: %s\n",novaD->credTotal,novaD->top,novaD->d[novaD->top]);
                     }
             }
             else
@@ -298,6 +295,7 @@ void realizarMatricula(int semestre)
         {   
             //RA,CódigodaDisciplina,Semestre,Nota,Faltas
             fprintf(fp,"%ld,%s,%d,0.0,0.0\n",user->ra,novaD->d[i],semestre);
+            fflush(fp);
         }
     }
 
