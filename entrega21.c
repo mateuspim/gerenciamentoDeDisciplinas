@@ -230,7 +230,7 @@ void showDisciplinas(int semestre,int *hasDisciplina)
             erro = consultaDisciplina(novaNTD[i].disciplina,nomeDisciplina,&cred);
 
             if (erro == 0)
-                printf("%s  -   %s  -   Nota: %0.2f    -   Falta:%0.2f\n",novaNTD[i].disciplina,nomeDisciplina,novaNTD[i].nota,novaNTD[i].faltas);  
+                printf("%s  -   %s  -   Nota: %0.2f    -   Falta: %0.2f\n",novaNTD[i].disciplina,nomeDisciplina,novaNTD[i].nota,novaNTD[i].faltas);  
         }
     }
 

@@ -86,7 +86,7 @@ void consultaPrerequisito(char *idD)
 			}
 			else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')
 			{
-				printf("Pre-requisito: Nenhum\n");
+				printf("Pre-requisitos: Nenhum\n");
 			}		
 		}
 	}

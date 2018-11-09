@@ -1,5 +1,2 @@
-2201,teste,teste,senha
-1234,Gregor,Samsa,Kafka
 0,admin,admin,admin
 666,root,root,root
-111111,zé,das,couve
