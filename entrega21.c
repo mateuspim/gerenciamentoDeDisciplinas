@@ -110,7 +110,7 @@ void persisteDisciplinaStruct()
         //RA,CódigodaDisciplina,Semestre,Nota,Faltas
         for(register int i = 0;i<novaDE->top;i++)
         {
-            fprintf(fp,"%ld,%s,%d,%0.2f,%0.2f",novaNTD[i].ra,novaNTD[i].disciplina,novaNTD[i].semestre,novaNTD[i].nota,novaNTD[i].faltas);
+            fprintf(fp,"%ld,%s,%d,%0.2f,%0.2f\n",novaNTD[i].ra,novaNTD[i].disciplina,novaNTD[i].semestre,novaNTD[i].nota,novaNTD[i].faltas);
             fflush(fp);
         }
 
