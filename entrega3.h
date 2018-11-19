@@ -1,19 +1,39 @@
 #ifndef entrega3
 #define entrega3
 
-#define fRAaluno "RAdoAluno.txt"
+#define capAlunos 100
 
 typedef struct coeficienteRendimento{
 long int ra;
+float cvTotal;
+float credTotal;
 float cr;
 }cRendimento;
 
+typedef struct coefRendDescritor{
+    int tam;
+    int top;
+}crDescritor;
+
+cRendimento *cRend;
+crDescritor *crDesc;
+
 void menuHistoricoAluno();
 void menuRendimento(FILE *fp);
+
 void writeDisciplinas(FILE *fp);
 
-void swap(ntDisciplina *a, ntDisciplina *b);
-void quicksort(ntDisciplina arr[], int l, int r);
+void swapNTDisc(ntDisciplina *a, ntDisciplina *b);
+void quicksortNTDisc(ntDisciplina arr[], int l, int r);
 void printArray();
+
+void addAlunosCoefRend();
+void inicializaCoefRend();
+void calcCoefRend();
+void reallocCoefRend();
+
+void swapCRend(cRendimento *a, cRendimento *b);
+void quicksortCRend(cRendimento *arr, int l, int r);
+void printAlunos();
 
 #endif 

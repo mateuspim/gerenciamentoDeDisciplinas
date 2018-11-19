@@ -45,18 +45,18 @@ int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 		printf("Nao foi possivel encontrar o arquivo!\n");
 		return 2;
 	}
-
-	while (fscanf(fp,"%[^,],%[^,],%d\n",idD,nomeD,creditos)!=EOF)
-	{	
-		if (strcmp(idDisciplina,idD)==0)
-		{
-			strcpy(nomeDisciplina,nomeD);
-			fclose(fp);
-			return 0;
+	else
+	{
+		while (fscanf(fp,"%[^,],%[^,],%d\n",idD,nomeD,creditos)!=EOF)
+		{	
+			if (strcmp(idDisciplina,idD)==0)
+			{
+				strcpy(nomeDisciplina,nomeD);
+				fclose(fp);
+				return 0;
+			}
 		}
-		
 	}
-	
 	fclose(fp);
 	return 1;
 
@@ -113,10 +113,14 @@ void cadastroAluno()
 	printf("\nCADASTRO DE ALUNOS\n");
 	do
 	{
-
 		printf("Digite o RA do Aluno: ");
 		scanf("%ld",&ra);
 		getchar();
+
+		if (ra<=0 || ra>=999999999)
+			continue;
+
+		printf("%lu",ra);
 
 		erro = verificaAluno(ra);
 
@@ -147,18 +151,23 @@ int verificaAluno(long int ra)
 {
 	long int ras;
 	char buffer[200];
+
 	FILE *fp = fopen(fAlunos,"r");
 	
-	while(fscanf(fp,"%ld,%[^\n]",&ras,buffer)!=EOF)
+	if (fp==NULL)
 	{
-		if (ras==ra)
-			return 1;
+		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
 	}
-
+	else
+	{	
+		while(fscanf(fp,"%ld,%[^\n]",&ras,buffer)!=EOF)
+		{
+			if (ras==ra)
+				return 1;
+		}
+	}
 	return 0;
 	fclose(fp);	
-
-
 }
 
 int fazerLogin()

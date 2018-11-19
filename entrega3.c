@@ -9,9 +9,11 @@
 
 void menuHistoricoAluno()
 {
-    FILE *fp;
+    char ra[20];
+    sprintf(ra,"%d.txt", user->ra);
 
-    fp = fopen(fRAaluno,"w");
+    FILE *fp;
+    fp = fopen(ra,"w");
 
     if(fp==NULL)
     {
@@ -19,37 +21,136 @@ void menuHistoricoAluno()
     }
     else
     {
+        inicializaDiscNotaFalta();   // Inicializa as structs que contem nota,falta,ra e seu respectivo descritor
+        addDiscNotaFalta();         // Le o arquivo alunosdisciplinas.txt e adiciona para as structs de cima
+        
         fprintf(fp,"Faculdade de Tecnologia – UNICAMP\n\n");
         fprintf(fp,"Relatório de Matrícula\n\n");
         fprintf(fp,"Nome Completo: %s\n",user->nome);
         fprintf(fp,"RA: %ld\n",user->ra);
-        menuRendimento(fp);
-        fprintf(fp,"Coeficiente de Rendimento: NULL\n");
-        fprintf(fp,"Classificação do aluno na turma : 0 de NULL\n\n\n");
-        fprintf(fp,"Disciplina	Nota    Faltas (%%)    Situação\n");
-        writeDisciplinas(fp);
+
+        menuRendimento(fp); // chama a funcao para calcular os coeficiente de rendimento
+
+        fprintf(fp,"Disciplina	    Nota        Faltas (%%)    Situação\n");
+
+        writeDisciplinas(fp);   // chama a funcao para escrever as disciplinas
 
         fflush(fp);
     }
 
     fclose(fp);
-    puts("\nArquivo (RAdoAluno.txt) foi gerado com sucesso");
+    printf("\nArquivo %s foi gerado com sucesso",ra);
 }
 
 void menuRendimento(FILE *fp)
 {
-    //TO DO
+    inicializaCoefRend();     // Inicializa as structs que contem coeficiente de Rendimento e ra e seu respectivo descritor
+    addAlunosCoefRend();     // Adiciona os alunos para o vetor de struct
+    calcCoefRend();         // Calcula o coeficiente de rendimento para todos os alunos
+
+    quicksortCRend(cRend,0,crDesc->top - 1); // faz o sorte em ordem descendente dos cr
+    //printAlunos();    //Mostrar os alunos e seus respectivos cr
+
+    for (register int j = 0; j<crDesc->top;j++)
+    {
+        if (cRend[j].ra == user->ra)
+        {
+            fprintf(fp,"Coeficiente de Rendimento: %0.2f\n",cRend[j].cr/10);
+            fprintf(fp,"Classificação do aluno na turma : %d de %d\n\n\n",j + 1,crDesc->top);
+        }
+    }
+
+}
+
+//Funcao para inicializar usando malloc as structs
+void inicializaCoefRend()
+{
+    free(cRend);
+    cRend =   malloc(capAlunos * sizeof(cRendimento));
+
+    if(cRend==NULL)
+        puts("FALHA NO MALLOC DO cRend");
+
+    free(crDesc);
+    crDesc =    malloc(sizeof(crDescritor));
+    
+    if(crDesc==NULL)
+        puts("FALHA NO MALLOC DO crDesc");
+
+    crDesc->top = 0;
+    crDesc->tam = capAlunos;
+}
+
+//Caso haja uma sobrecarga das structs -> realoca += capacidade;
+void reallocCoefRend()
+{
+    crDesc->tam += capAlunos;
+    cRend = realloc(cRend, crDesc->tam * sizeof(ntDisciplina));
+}
+
+//Funcao para adicionar os alunos a struct que sera usada para calcular os coeficiente de rendimento
+void addAlunosCoefRend()
+{
+    long int ra;
+    char buffer[250];
+	FILE *fp = fopen(fAlunos,"r");
+	
+	if (fp==NULL)
+	{
+		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
+	}
+	else
+	{	
+		while(fscanf(fp,"%ld,%[^\n]",&ra,buffer)!=EOF)
+		{
+            if (crDesc->top == crDesc->tam)
+                reallocCoefRend();
+                
+			cRend[crDesc->top++].ra = ra;
+		}
+	}
+
+	fclose(fp);	
+}
+
+//Funcao de calculo do coeficiente de rendimento para todos os alunos cadastrados
+void calcCoefRend()
+{
+    char disciplina[10],buffer[250];
+    long int ra;
+    int creditos,erro;
+
+    for(register int i = 0;i<novaDE->top;i++)
+    {
+        if (novaNTD[i].nota>=5 && novaNTD[i].faltas<25) //Condicao do pdf somente disciplinas aptas sao computadas
+        {
+            erro = consultaDisciplina(novaNTD[i].disciplina,buffer,&creditos); // Funcao para voltar os creditos
+        
+            if (erro==0)
+            {
+                for (register int j = 0; j<crDesc->top;j++) // Achar a posicao da struct onde esta o respectivo aluno
+                {
+                    if (cRend[j].ra == novaNTD[i].ra)
+                    {
+                        cRend[j].credTotal += creditos;     
+                        cRend[j].cvTotal += creditos * novaNTD[i].nota;
+                        cRend[j].cr = cRend[j].cvTotal/cRend[j].credTotal;
+                    }
+                }
+            }
+            else
+                continue;   
+        }
+        else
+            continue;
+    }
+
 }
 
 void writeDisciplinas(FILE *fp)
 {
-    inicializaDiscNotaFalta();  //Inicializa ambas as structs
-    addDiscNotaFalta();         //Le o arquivo e adiciona para as structs
-
-    //printArray(); Verificacao da struct antes do sort
-
     //5* Todas as disciplinas que o aluno cursou devem aparecer em ordem semestral
-    quicksort(novaNTD,0,novaDE->top - 1); //Deixar os semestres em ordem crescente
+    quicksortNTDisc(novaNTD,0,novaDE->top - 1); //Deixar os semestres em ordem crescente
     
     //printArray(); Verificacao da struct depois do sort
 
@@ -62,11 +163,11 @@ void writeDisciplinas(FILE *fp)
         for(register int i = 0;i<novaDE->top;i++)
         {
 
-            if(user->ra == novaNTD[i].ra)
+            if(user->ra == novaNTD[i].ra) // Se a disciplina estiver matriculado ao aluno logado
             {
 
-                //fprintf(fp,"\n\nSI200  		7.1 	10.4    	  Aprovado por Nota e Frequência\n"); //Exemplo de formatacao para pegar a tabulacao
-                fprintf(fp,"%s  		%0.2f 	%0.2f    	  ",novaNTD[i].disciplina,novaNTD[i].nota,novaNTD[i].faltas);
+                //fprintf(fp,"\n\nSI200  		    7.1 	    10.4    	  Aprovado por Nota e Frequência\n"); //Exemplo de formatacao para pegar a tabulacao
+                fprintf(fp,"%s  		    %0.2f 	    %0.2f    	  ",novaNTD[i].disciplina,novaNTD[i].nota,novaNTD[i].faltas);
 
                 //Verifica os parametros de nota e falta para verificar se o aluno passou ou nao
                 /*  Condicoes:
@@ -88,6 +189,7 @@ void writeDisciplinas(FILE *fp)
     }
 }
 
+// Funcao para printar o vetor dos alunos com notas, ra, faltas. Usada para verificacao
 void printArray()
 {
     for(register int i = 0;i<novaDE->top;i++)
@@ -96,14 +198,16 @@ void printArray()
     }
 }
 
-void swap(ntDisciplina *a, ntDisciplina *b)
+//Funcao que troca a posicao da struct dentro do arranjo
+void swapNTDisc(ntDisciplina *a, ntDisciplina *b)
 {
     ntDisciplina temp = *a;
     *a = *b;
     *b = temp;
 }
 
-void quicksort(ntDisciplina *arr, int l, int r)
+//quicksort usado para ordenar o array de registros dos alunos por semestre
+void quicksortNTDisc(ntDisciplina *arr, int l, int r)
 {
     if (l >= r)
     {
@@ -117,11 +221,50 @@ void quicksort(ntDisciplina *arr, int l, int r)
     {
         if (arr[i].semestre <= pivot)
         {
-            swap(&arr[cnt], &arr[i]);            
+            swapNTDisc(&arr[cnt], &arr[i]);            
             cnt++;
         }
     }
 
-    quicksort(arr, l, cnt-2);
-    quicksort(arr, cnt, r);
+    quicksortNTDisc(arr, l, cnt-2);
+    quicksortNTDisc(arr, cnt, r);
+}
+
+// funcao para printar os valores de cr dos alunos. Usado para verificacao
+void printAlunos()
+{
+    for(int i = 0;i<crDesc->top;i++)
+        printf("RA: %ld         cred*nota:%0.2f         creditos:%0.2f cr:%0.2f\n",cRend[i].ra,cRend[i].cvTotal,cRend[i].credTotal,cRend[i].cr);
+}
+
+//Funcao que troca a posicao da struct dentro do arranjo
+void swapCRend(cRendimento *a, cRendimento *b)
+{
+    cRendimento temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Quicksort usado para ordenar o array de registros dos alunos por cr em ordem decrescente
+void quicksortCRend(cRendimento *arr, int l, int r)
+{
+    if (l >= r)
+    {
+        return;
+    }
+
+    float pivot = arr[r].cr;
+    int cnt = l;
+
+    for (int i = l; i <= r; i++)
+    {
+        if (arr[i].cr >= pivot)
+        {
+            swapCRend(&arr[cnt], &arr[i]);           
+            cnt++;
+        }
+    }
+
+    quicksortCRend(arr, l, cnt-2);
+    quicksortCRend(arr, cnt, r);
 }
