@@ -6,24 +6,6 @@
 #include "entrega2.h"
 #include "entrega21.h"
 
-#define cap 100  //Capacidade do vetor struct ntDisciplina inicial
-
-typedef struct discNotaFalta{
-    float nota;
-    float faltas;
-    long int ra;
-    int semestre;
-    char disciplina[10];
-}ntDisciplina;
-
-typedef struct discNTDescritor{
-    int tam;
-    int top;
-}ntDescritor;
-
-ntDisciplina *novaNTD;
-ntDescritor *novaDE;
-
 void menuAlterarNotaFalta()
 {
     
@@ -43,6 +25,9 @@ void menuAlterarNotaFalta()
         printf("Digite o semestre: ");
         scanf("%d",&semestre);
         getchar();
+
+        if(semestre<=0)
+            break;
     
         puts("\nDisciplinas:");
         showDisciplinas(semestre,&hasDisciplina);  //Mostra as disciplinas relativa ao semestre e usuario logado

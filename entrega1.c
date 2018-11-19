@@ -179,19 +179,21 @@ int fazerLogin()
 
 	if(fp == NULL){
 		printf("Nao foi possivel encontrar o arquivo!\n");
-		return 1;
+		//return 1;
 	}
-	
-	while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%[^\n]",&user->ra,nome,loginArquivo,senhaArquivo)!=EOF)
-	{		
-		if (strcmp(loginArquivo,user->login)==0 && strcmp(senhaArquivo,user->senha)==0)
-		{
-			fclose(fp);
-			return 0;
+	else
+	{
+		while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%[^\n]",&user->ra,user->nome,loginArquivo,senhaArquivo)!=EOF)
+		{		
+			if (strcmp(loginArquivo,user->login)==0 && strcmp(senhaArquivo,user->senha)==0)
+			{
+				fclose(fp);
+				return 0;
+			}
 		}
+		puts("Usuario ou Senha invalidos.");
 	}
-	
-    puts("Usuario ou Senha invalidos.");
+
 	fclose(fp);
 	return 1;
 }

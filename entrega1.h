@@ -7,6 +7,7 @@
 
 typedef struct usuariologado{
 long int ra;
+char nome[100];
 char login[50];
 char senha[50];
 }usuarioLogado;
@@ -25,7 +26,5 @@ int verificaAluno(long int ra);
 void cadastroAluno();
 
 int fazerLogin();
-
-
 
 #endif 

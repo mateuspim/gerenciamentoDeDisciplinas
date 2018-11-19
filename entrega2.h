@@ -3,6 +3,14 @@
 
 #define fAlunosD "AlunosDisciplinas.txt"
 
+typedef struct disciplinas{
+    int top;
+    int ini;
+    int credTotal;
+    char d[32][10]; // array de string para 32 disciplinas com 10 caracteres
+}stDisciplina;
+
+
 void menuMatricula();
 
 void inicializaDisciplina();

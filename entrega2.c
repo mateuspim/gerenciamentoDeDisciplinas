@@ -7,13 +7,6 @@
 
 #define MAXCRED 32
 
-typedef struct disciplinas{
-    int top;
-    int ini;
-    int credTotal;
-    char d[32][10]; // array de string para 32 disciplinas com 10 caracteres
-}stDisciplina;
-
 stDisciplina * novaD;
 
 //Funcao para inicializar a struct

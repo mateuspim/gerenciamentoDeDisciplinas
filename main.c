@@ -6,6 +6,7 @@
 #include "entrega1.h"
 #include "entrega2.h"
 #include "entrega21.h"
+#include "entrega3.h"
 
 void menu();
 
@@ -20,10 +21,9 @@ int main (int argc, char * argv)
 		erro = fazerLogin(user);
 	}while(erro!=0);
     
-
 	do
 	{	
-        printf("\nUsuario logado -> RA: %ld   Login: %s\n\n",user->ra,user->login);
+        printf("\nUsuario logado -> RA: %ld   Nome: %s	Login: %s\n\n",user->ra,user->nome,user->login);
 		menu();
 		scanf("%d",&op);
         getchar();
@@ -42,6 +42,7 @@ int main (int argc, char * argv)
 				menuAlterarNotaFalta();
 				break;
 			case 5:
+				menuHistoricoAluno();
 				break;
 			case 6:
 				break;
