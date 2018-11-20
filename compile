@@ -1,6 +1,7 @@
 gcc -c entrega1.c
 gcc -c entrega2.c
 gcc -c entrega21.c
+gcc -c entrega3.c
 gcc -c main.c
-gcc entrega1.o entrega2.o entrega21.o main.o -o main.exe
+gcc entrega1.o entrega2.o entrega21.o entrega3.o main.o -o main.exe
 ./main.exe
