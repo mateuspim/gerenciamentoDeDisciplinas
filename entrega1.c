@@ -236,7 +236,7 @@ int fazerLogin()
 	}
 	else
 	{
-		while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%[^\n]",&user->ra,user->nome,loginArquivo,senhaArquivo)!=EOF)
+		while (fscanf(fp,"%ld,%[^,] ,%[^,] ,%s",&user->ra,user->nome,loginArquivo,senhaArquivo)!=EOF)
 		{		
 			if (strcmp(loginArquivo,user->login)==0 && strcmp(senhaArquivo,user->senha)==0)
 			{
