@@ -4,6 +4,8 @@
 
 #include "entrega1.h"
 #include "entrega2.h"
+#include "entrega21.h"
+#include "entrega3.h"
 #include "getSO.h"
 
 //Funcao para inicializar a struct
@@ -11,6 +13,15 @@ void inicializaDisciplina()
 {
     free(novaD);
     novaD = (stDisciplina *) calloc(1,sizeof(stDisciplina));
+}
+
+void sortMatriculas()
+{
+    inicializaDiscNotaFalta();  //Inicializa ambas as structs
+    addDiscNotaFalta();         //Le o arquivo e adiciona para as structs
+
+    quicksortNTDisc(novaNTD,0,novaDE->top - 1);
+    persisteDisciplinaStruct();
 }
 
 //Funcao menu para matricula nas disciplinas
@@ -194,7 +205,7 @@ int checkPreRequisitos(char * idDisciplina)
 		    {
 			    upperChar(idRequisito);
                 erro += checkAlunoDisciplinas(idRequisito);                     //Caso haja + de 1 pre-requisito por disciplina
-
+                
                 if(idRequisito[0]== 'A' && idRequisito[1]== 'A')
                     puts("\nDisciplina com pre-requisitos especiais. Atente-se a eles!\n");
 		    }
@@ -220,7 +231,6 @@ int checkPreRequisitos(char * idDisciplina)
 */
 int checkAlunoDisciplinas(char *idRequisito)
 {
-
     FILE * fp;
     int auxSem;
     long int ra;
@@ -240,9 +250,9 @@ int checkAlunoDisciplinas(char *idRequisito)
         {
             if(auxSem==novaD->semestre && user->ra == ra && strcmp(idDisciplina,idRequisito)==0)
                 return 2;
-		
-            if(user->ra == ra && strcmp(idDisciplina,idRequisito)==0 && nota>=5 && falta<25 && auxSem!=novaD->semestre)          //  Verificao do aluno logado com ra, se a disciplina na lista e o requisito passado            
-                return 0;                                                                                                       //   no mínimo, conceito igual a 5 e faltas menor que 25%
+               
+            if(user->ra == ra && strcmp(idDisciplina,idRequisito)==0 && nota>=5 && falta<25)          //  Verificao do aluno logado com ra, se a disciplina na lista e o requisito passado            
+                return 0;                                                                            //   no mínimo, conceito igual a 5 e faltas menor que 25%
         }
     }
 
