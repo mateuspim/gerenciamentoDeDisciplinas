@@ -240,12 +240,9 @@ int checkAlunoDisciplinas(char *idRequisito)
         {
             if(auxSem==novaD->semestre && user->ra == ra && strcmp(idDisciplina,idRequisito)==0)
                 return 2;
-               
-
+		
             if(user->ra == ra && strcmp(idDisciplina,idRequisito)==0 && nota>=5 && falta<25 && auxSem!=novaD->semestre)          //  Verificao do aluno logado com ra, se a disciplina na lista e o requisito passado            
                 return 0;                                                                                                       //   no mínimo, conceito igual a 5 e faltas menor que 25%
-            else                                                    
-                return 1;    
         }
     }
 
