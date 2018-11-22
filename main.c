@@ -16,6 +16,8 @@ int main (int argc, char * argv)
     
 	user = (usuarioLogado *) calloc(1,sizeof(usuarioLogado));
     
+	printf("\nSistema de Gerencia de Disciplinas Semestrais\n\n");
+	
 	do
 	{
 		erro = fazerLogin(user);
@@ -23,7 +25,7 @@ int main (int argc, char * argv)
     
 	do
 	{	
-        printf("\nUsuario logado -> RA: %ld   Nome: %s	Login: %s\n\n",user->ra,user->nome,user->login);
+        printf("\nUsuario logado -> RA: %ld   Nome: %s\n\n",user->ra,user->nome);
 		menu();
 		scanf("%d",&op);
         getchar();
@@ -47,7 +49,7 @@ int main (int argc, char * argv)
 			case 6:
 				break;
 			default:
-				puts("Opcao Invalida!!!");
+				puts("\nOpcao Invalida!!!");
                 break;
 		}
 	}while(op!=6);

@@ -42,4 +42,5 @@ SI914,Estagio em Computacao I,6
 SI915,Estagio em Computacao II,6
 AA200,Autorizacao da Coordenadoria que oferece a disciplina,0
 AA410,Possuir CP (coeficiente de Progressao) maior ou igual a 10%,0
+AA435,Possuir CP (coeficiente de Progressao) maior ou igual a 35%,0
 AA465,Possuir CP (coeficiente de Progressao) maior ou igual a 65%,0

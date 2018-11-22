@@ -5,10 +5,6 @@
 #include "entrega1.h"
 #include "entrega2.h"
 
-#define MAXCRED 32
-
-stDisciplina * novaD;
-
 //Funcao para inicializar a struct
 void inicializaDisciplina()
 {
@@ -20,36 +16,46 @@ void inicializaDisciplina()
 void menuMatricula()
 {
 
-    int semestre,erro,credTotal = 0,credito = 0;
+    int erro,credTotal = 0,credito = 0;
     char disciplina[10];
 
     //Inicializando struct disciplina para futuras verificacoes
     inicializaDisciplina();
 
-    puts("Para sair, digite XX000");
-    puts("Para nao fazer cadastro das disciplinas, digite NN000");
+    puts("\nPara sair, digite XX000");
+    puts("Para nao fazer cadastro das disciplinas, digite NN000\n");
 
     do
     {
+
     printf("Digite o semestre: ");
-    scanf("%d",&semestre);
+    scanf("%d",&novaD->semestre);
     getchar();
 
-    if (semestre > 0)
-        erro = checkSemestre(semestre);
+    if (novaD->semestre<=0 ||  novaD->semestre>10)
+    {
+        puts("\nSemestre invalido: fora dos valores permitidos para a matricula\n");
+        continue;
+    }  
+    else
+        erro = checkSemestre();
+
     /*  
         erro = 0 -> aluno semestre valido
         erro = 1 -> aluno semestre invalido
-        erro = 2 -> aluno nao cadastrado anteriormente
+        erro = 3 -> aluno com matricula no semestre digitado
     */
 
-        if (erro==1 || semestre<0)
-            puts("Semestre invalido!!");
-
+        if (erro==1)
+        {
+            puts("\nSemestre invalido: valor anterior ao semestre mais atual cadastrado\n");
+            continue;
+        }
+            
         if (erro == 3)
         {
-            getDiscAnterior(semestre); //funcao para pegar as disciplinas anteriores e dando credito ao autor
-            erro =0;
+            getDiscAnterior(); //funcao para pegar as disciplinas anteriores do semestre digitado e dando credito ao autor
+            erro = 0;
         }
             
         
@@ -63,18 +69,19 @@ void menuMatricula()
     limpaChar(disciplina);
     upperChar(disciplina);
 
-
     erro = 1;
 
     if (strcmp(disciplina,"XX000")==0)
     {
-        realizarMatricula(semestre);
+        realizarMatricula();
         puts("\nTransacao efetuada com sucesso");
+        free(novaD);
         erro = 0;
     }
     else if (strcmp(disciplina,"NN000")==0)
     {
         puts("\nTransacao suspensa com sucesso");
+        free(novaD);
         erro = 0;
     }
     else
@@ -84,8 +91,7 @@ void menuMatricula()
    
     }while(erro!=0); 
 
-
-    
+    free(novaD);    
 }
 
 // Faz quase toda a vericacao para o cadastro da disciplina
@@ -97,7 +103,7 @@ int checkDisciplina(char * idDisciplina)
 
     if  (erro == 1)
     {
-        puts("Disciplina nao encontrada dentro do banco de dados");
+        puts("Disciplina digitada nao encontrada no banco de dados");
         return 1;
     }
     else
@@ -106,6 +112,7 @@ int checkDisciplina(char * idDisciplina)
         if (novaD->credTotal + creditos <=MAXCRED) //Verificacao dos creditos, caso ultrapasse nao cadastra e printa na tela
         {
             //puts("passou pelos creditos");
+
             erro = 0;
             for(int i = 0; i<MAXCRED;i++) // Verificacao se a disciplina digitada ja fora inserida na struct anteriormente
             {
@@ -121,6 +128,7 @@ int checkDisciplina(char * idDisciplina)
                 //puts("passou pela duplicidade");
                 erro = checkAlunoDisciplinas(idDisciplina); //Verificacao de duplicade da disciplina se ja fora cumprida satisfazendo nota e falta
 
+
                 if (erro == 1)  //erro = 1 demonstra que a funcao nao encontrou a disciplina anteriormente e pode prosseguir
                 {
                     //puts("passou pela duplicidade dupla");
@@ -130,7 +138,6 @@ int checkDisciplina(char * idDisciplina)
                         if (erro == 0)
                         {
                             //puts("passou pela verificacao dos prerequisitos");
-                        
                             //por fim o cadastro da disciplina na struct
                         
                             novaD->credTotal+=creditos;
@@ -139,23 +146,23 @@ int checkDisciplina(char * idDisciplina)
                         }
                         else
                         {
-                            puts("Disciplina nao pode ser cadastrada: pre-requisitos nao atendidos");
+                            puts("\nDisciplina nao pode ser cadastrada por nao atender aos pre-requisitos ou seu cadastro esta sendo realizada no mesmo semestre que seu pre-requisito");
                         }
                 }
                 else
                 {
-                    puts("Disciplina ja cadastrada, cumprida e satisfeito as razoes de Nota e Falta");
+                    puts("\nDisciplina ja cadastrada, cumprida e satisfeito as razoes de Nota e Falta");
                 }
                     
             }
             else
             {
-                puts("Disciplina ja cadastrada!");
+                puts("\nDisciplina ja cadastrada no semestre atual!");
             }              
         }           
         else
         {
-            puts("Cadastro de disciplina ultrassa o max de creditos por semestre!");
+            puts("\nCadastro de disciplina ultrassa o max de creditos por semestre!");
         }
     }
 
@@ -176,7 +183,7 @@ int checkPreRequisitos(char * idDisciplina)
 
 	if(fp == NULL)
 	{
-		printf("Nao foi possivel encontrar o arquivo!\n");
+		printf("\nNao foi possivel encontrar o arquivo: Prerequisitos.txt\n");
 	}
     else
     {
@@ -187,7 +194,7 @@ int checkPreRequisitos(char * idDisciplina)
 			    upperChar(idRequisito);
                 erro += checkAlunoDisciplinas(idRequisito);                     //Caso haja + de 1 pre-requisito por disciplina
 
-                if(strcmp(idRequisito,"AA200")==0 || strcmp(idRequisito,"AA410")==0 || strcmp(idRequisito,"AA465")==0)
+                if(idRequisito[0]== 'A' && idRequisito[1]== 'A')
                     puts("\nDisciplina com pre-requisitos especiais. Atente-se a eles!\n");
 		    }
 		    else if (strcmp(idDisciplina,idD)==0 && idRequisito[0]=='n')        //Se nao, retorna 0
@@ -196,9 +203,7 @@ int checkPreRequisitos(char * idDisciplina)
 		    }		
 	    }
 
-        
-
-    
+            
         if (erro==0)    
             return 0;
         else
@@ -225,18 +230,21 @@ int checkAlunoDisciplinas(char *idRequisito)
 
     if (fp == NULL)
     {
-            puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
+            puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas.txt");
     }
     else
-    {
-        
+    {   
         //RA,CódigodaDisciplina,Semestre,Nota,Faltas
         while(fscanf(fp,"%ld,%[^,],%d,%f,%f\n",&ra,idDisciplina,&auxSem,&nota,&falta)!=EOF)
         {
-            if(user->ra == ra && strcmp(idDisciplina,idRequisito)==0 && nota>=5 && falta<25)   //  Verificao do aluno logado com ra, se a disciplina na lista e o requisito passado            
-                return 0;                                                                     //   no mínimo, conceito igual a 5 e faltas menor que 25% 
-            else
-                return 1;                 
+            if(auxSem==novaD->semestre && user->ra == ra && strcmp(idDisciplina,idRequisito)==0)
+                return 2;
+               
+
+            if(user->ra == ra && strcmp(idDisciplina,idRequisito)==0 && nota>=5 && falta<25 && auxSem!=novaD->semestre)          //  Verificao do aluno logado com ra, se a disciplina na lista e o requisito passado            
+                return 0;                                                                                                       //   no mínimo, conceito igual a 5 e faltas menor que 25%
+            else                                                    
+                return 1;    
         }
     }
 
@@ -245,7 +253,7 @@ int checkAlunoDisciplinas(char *idRequisito)
 }
 
 // Funcao para pegar as disciplinas anteriores do semestre do aluno caso seja digitado um semestre com disciplinas cadastradas
-void getDiscAnterior(int semestre)
+void getDiscAnterior()
 {
     int erro = 0,creditos = 0,auxSem;
     char disciplina[10];//idDisciplina[10];
@@ -258,14 +266,14 @@ void getDiscAnterior(int semestre)
 
     if (fp==NULL)
     {
-        puts("ERRO AO ABRIR O ARQUIVO: AlunosDisciplinas");
+        puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas.txt");
     }
     else
     {
             //RA,CódigodaDisciplina,Semestre,Nota,Faltas
             while(fscanf(fp,"%ld,%[^,],%d,%s\n",&ra,disciplina,&auxSem,buffer)!=EOF)
             {     
-                if(ra==user->ra && auxSem==semestre)
+                if(ra==user->ra && auxSem==novaD->semestre)
                 {
                     //strcpy(idDisciplina,disciplina);
                     erro = consultaDisciplina(disciplina,buffer,&creditos);
@@ -284,7 +292,7 @@ void getDiscAnterior(int semestre)
 }
 
 //Funcao para checkagem do semestre
-int checkSemestre(int semestre)
+int checkSemestre()
 {
 
     int ultSem = 0,auxSem;
@@ -295,8 +303,11 @@ int checkSemestre(int semestre)
 
     if (fp == NULL)
     {
-        puts("ERRO AO ABRIR O ARQUIVO AlunosDisciplinas.txt");
-        return 3;
+        //puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas.txt");
+        fclose(fp);
+        fp = fopen(fAlunosD,"w");
+        fclose(fp);
+        return 0;
     }
     else
     {
@@ -316,10 +327,10 @@ int checkSemestre(int semestre)
         //if(ultSem == 0) //Aluno nao cadastrado
         //    return 2;
     
-        if(ultSem == semestre)  //Politica para cadastrar as disciplinas anteriores
-            return 3;           //do semestre atual
+        if(ultSem == novaD->semestre)    //Politica para cadastrar as disciplinas anteriores
+            return 3;                   //do semestre atual
     
-        if(ultSem < semestre) //Semestre valido
+        if(ultSem < novaD->semestre) //Semestre valido
             return 0;
         else   
             return 1;  //Semestre invalido
@@ -327,7 +338,7 @@ int checkSemestre(int semestre)
 }
 
 //Funcao para realizar matricula final -> gravar a struct dentro do txt
-void realizarMatricula(int semestre)
+void realizarMatricula()
 {
     FILE *fp;
 
@@ -342,7 +353,7 @@ void realizarMatricula(int semestre)
         for (int i=novaD->ini;i<novaD->top;i++)
         {   
             //RA,CódigodaDisciplina,Semestre,Nota,Faltas
-            fprintf(fp,"%ld,%s,%d,0.0,0.0\n",user->ra,novaD->d[i],semestre);
+            fprintf(fp,"%ld,%s,%d,0.0,0.0\n",user->ra,novaD->d[i],novaD->semestre);
             fflush(fp);
         }
     }

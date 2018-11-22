@@ -17,7 +17,7 @@ void menuHistoricoAluno()
 
     if(fp==NULL)
     {
-        puts("ERRO AO ABRIR ARQUIVO: RAdoAluno.txtt");
+        printf("\nNao foi possivel abrir o arquivo %s",ra);
     }
     else
     {
@@ -39,7 +39,11 @@ void menuHistoricoAluno()
     }
 
     fclose(fp);
-    printf("\nArquivo %s foi gerado com sucesso",ra);
+    printf("\nArquivo %s foi gerado com sucesso!\n",ra);
+    
+    free(cRend);
+    free(crDesc);
+
 }
 
 void menuRendimento(FILE *fp)

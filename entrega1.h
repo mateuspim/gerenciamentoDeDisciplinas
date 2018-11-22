@@ -22,7 +22,8 @@ void verificaDisciplina();
 int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos);
 void consultaPrerequisito(char *idD);
 
-int verificaAluno(long int ra);
+int verificaAlunoRA(long int ra);
+int verificaAlunoLogin(char *login);
 void cadastroAluno();
 
 int fazerLogin();

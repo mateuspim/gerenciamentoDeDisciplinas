@@ -1,6 +1,6 @@
 0,admin,admin,admin
-1,Steve Jobs,t,t
-2,Mark Zuckerberg,2,t
-3,Bill Gates,3,t
-4,Linus Torvalds,4,t
-5,Steve Balmer,5,t
+1,Steve Jobs,s,j
+2,Mark Zuckerberg,m,z
+3,Bill Gates,b,g
+4,Linus Torvalds,l,t
+5,Steve Balmer,s,b

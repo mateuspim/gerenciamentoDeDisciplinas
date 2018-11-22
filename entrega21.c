@@ -27,17 +27,29 @@ void menuAlterarNotaFalta()
         getchar();
 
         if(semestre<=0)
+        {
+            puts("\nTransacao suspensa com sucesso");
             break;
-    
-        puts("\nDisciplinas:");
-        showDisciplinas(semestre,&hasDisciplina);  //Mostra as disciplinas relativa ao semestre e usuario logado
+        }
 
-        if(hasDisciplina==0)
-            printf("\nAluno nao matriculado em nenhuma disciplina para o semestre selecionado\n\n");
+        if (semestre > 10)
+        {
+            puts("\nSemestre invalido: fora dos valores permitidos para a matricula\n");
+            continue;
+        }
+        else
+        {
+            puts("\nDisciplinas:");
 
-    }while(hasDisciplina==0 && semestre>0);
+            showDisciplinas(semestre,&hasDisciplina);  //Mostra as disciplinas relativa ao semestre e usuario logado
 
-    if (semestre>0)
+            if(hasDisciplina==0)
+                printf("Aluno nao matriculado em nenhuma disciplina para o semestre selecionado\n\n");
+        }
+
+    }while(hasDisciplina==0 || (semestre <= 0 || semestre > 10));
+
+    if (semestre > 0 && semestre < 11)
     {
     
         printf("\nDigite o codigo da disciplina que deseja fazer a alteracao: ");
@@ -60,6 +72,9 @@ void menuAlterarNotaFalta()
                     scanf("%f",&nota);
                     getchar();    
 
+                    if (nota<0 || nota>10)
+                        puts("\nValor inserido para nota invalida!");
+
                 }while(nota<0 || nota>10);
 
                 do
@@ -68,17 +83,23 @@ void menuAlterarNotaFalta()
                     scanf("%f",&falta);
                     getchar();    
 
+                    if (falta<0 || falta>100)
+                        puts("\nValor inserido para falta invalida!");
+
                 }while(falta<0 || falta>100);
 
                 modifyDisciplinaStruct(disciplina,semestre,nota,falta);
                 persisteDisciplinaStruct();
 
-                puts("\nAtualizacao realizada com sucesso\n");
+                puts("\nAtualizacao realizada com sucesso!");
             }
             else
                 puts("\nDisciplina nao existente no semestre!");
         }
-    }    
+    }  
+
+    free(novaNTD);
+    free(novaDE);  
 }
 
 //Funcao para jogar toda a struct no arquivo
@@ -88,7 +109,7 @@ void persisteDisciplinaStruct()
 
     if (fp==NULL)
     {
-        puts("NAO E POSSIVEL ABRIR O ARQUIVO: AlunosDisciplinas");
+        puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas");
     }
     else
     {
@@ -171,7 +192,9 @@ void addDiscNotaFalta()
 
     if (fp==NULL)
     {
-        puts("NAO E POSSIVEL ABRIR O ARQUIVO: AlunosDisciplinas");
+        fclose(fp);
+        fp = fopen(fAlunosD,"w");
+        fclose(fp);
     }
     else
     {

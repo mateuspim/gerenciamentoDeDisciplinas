@@ -13,7 +13,7 @@ void verificaDisciplina()
 	char disciplina[10],nomeDisciplina[100];
 	int creditos;
 
-	printf("\nCONSULTA DE DISCIPLINAS\n");
+	printf("\nConsulta de Disciplinas\n\n");
 	printf("Digite a disciplina: ");
 	fgets(disciplina,10,stdin);
 	limpaChar(disciplina);
@@ -23,7 +23,7 @@ void verificaDisciplina()
 
 	if (erro == 1)
 		puts("Disciplina nao registrada ou inexistente");
-	else
+	else if (erro == 0)
 	{
 		printf("Nome: %s\n",nomeDisciplina);
 		printf("Quantidade de Creditos: %d\n",creditos);
@@ -42,7 +42,7 @@ int consultaDisciplina(char *idDisciplina,char *nomeDisciplina, int *creditos)
 
 	if(fp == NULL)
 	{
-		printf("Nao foi possivel encontrar o arquivo!\n");
+		printf("\nNao foi possivel encontrar o arquivo %s\n",fDisciplina);
 		return 2;
 	}
 	else
@@ -72,7 +72,7 @@ void consultaPrerequisito(char *idD)
 
 	if(fp == NULL)
 	{
-		printf("Nao foi possivel encontrar o arquivo!\n");
+		printf("\nNao foi possivel encontrar o arquivo %s\n",fRequisitos);
 	}
 	else
 	{
@@ -110,7 +110,8 @@ void cadastroAluno()
 	else
 	{
 
-	printf("\nCADASTRO DE ALUNOS\n");
+	printf("\nCadastro de Aluno\n\n");
+
 	do
 	{
 		printf("Digite o RA do Aluno: ");
@@ -118,22 +119,35 @@ void cadastroAluno()
 		getchar();
 
 		if (ra<=0 || ra>=999999999)
+		{
+			puts("\nRa digitado invalido!\n");
 			continue;
+		}	
 
-		printf("%lu",ra);
+		erro = verificaAlunoRA(ra);
 
-		erro = verificaAluno(ra);
-
-			if (erro==1)
-				puts("RA ja cadastrado!");
+		if (erro==1)
+			puts("\nRA ja cadastrado!\n");
 
 	}while(erro!=0);
+
 	printf("Digite o Nome do Aluno: ");
 	fgets(nome,100,stdin);
     limpaChar(nome);
-	printf("Digite o login: ");
-	fgets(login,50,stdin);
-    limpaChar(login);
+
+	do
+	{
+		printf("Digite o login: ");
+		fgets(login,50,stdin);
+    	limpaChar(login);
+
+		erro = verificaAlunoLogin(login);
+
+		if (erro==1)
+			puts("\nLogin ja cadastrado!\n");
+
+	}while(erro!=0);
+
 	printf("Digite a senha: ");
 	fgets(senha,50,stdin);
     limpaChar(senha);	
@@ -141,13 +155,13 @@ void cadastroAluno()
 	fprintf(fp,"%ld,%s,%s,%s\n",ra,nome,login,senha);
 	fflush(fp);
 
-	printf("\nALUNO CADASTRADO COM SUCESSO!\n");
+	printf("\nAluno: %s	cadastrado com sucesso!\n",nome);
 	
 	}
 	fclose(fp);
 }
 
-int verificaAluno(long int ra)
+int verificaAlunoRA(long int ra)
 {
 	long int ras;
 	char buffer[200];
@@ -163,7 +177,36 @@ int verificaAluno(long int ra)
 		while(fscanf(fp,"%ld,%[^\n]",&ras,buffer)!=EOF)
 		{
 			if (ras==ra)
+			{
+				fclose(fp);
 				return 1;
+			}	
+		}
+	}
+	return 0;
+	fclose(fp);	
+}
+
+int verificaAlunoLogin(char *login)
+{
+	long int ras;
+	char buffer[200],loginScan[50];
+
+	FILE *fp = fopen(fAlunos,"r");
+	
+	if (fp==NULL)
+	{
+		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
+	}
+	else
+	{	
+		while(fscanf(fp,"%ld,%[^,],%[^,],%[^\n]",&ras,buffer,loginScan,buffer)!=EOF)
+		{
+			if (strcmp(login,loginScan)==0)
+			{
+				fclose(fp);
+				return 1;
+			}
 		}
 	}
 	return 0;
@@ -175,6 +218,7 @@ int fazerLogin()
 	printf("Digite o usuario: ");
 	fgets(user->login,50,stdin);
 	limpaChar(user->login);
+
 	printf("Digite a senha: "); 
 	fgets(user->senha,50,stdin);
 	limpaChar(user->senha);
@@ -187,7 +231,7 @@ int fazerLogin()
 	fp = fopen(fAlunos,"r");
 
 	if(fp == NULL){
-		printf("Nao foi possivel encontrar o arquivo!\n");
+		printf("Nao foi possivel encontrar o arquivo %s\n",fAlunos);
 		//return 1;
 	}
 	else
@@ -200,7 +244,7 @@ int fazerLogin()
 				return 0;
 			}
 		}
-		puts("Usuario ou Senha invalidos.");
+		puts("\nUsuario ou Senha invalidos\n");
 	}
 
 	fclose(fp);
