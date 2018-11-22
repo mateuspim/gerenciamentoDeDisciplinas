@@ -5,6 +5,7 @@
 #include "entrega1.h"
 #include "entrega2.h"
 #include "entrega21.h"
+#include "getSO.h"
 
 void menuAlterarNotaFalta()
 {

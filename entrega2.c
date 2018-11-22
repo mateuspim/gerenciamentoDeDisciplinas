@@ -4,6 +4,7 @@
 
 #include "entrega1.h"
 #include "entrega2.h"
+#include "getSO.h"
 
 //Funcao para inicializar a struct
 void inicializaDisciplina()

@@ -1,8 +1,6 @@
 #ifndef entrega2
 #define entrega2
 
-#define fAlunosD "AlunosDisciplinas.txt"
-
 #define MAXCRED 32
 
 typedef struct disciplinas{

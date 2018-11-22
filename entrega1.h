@@ -1,10 +1,6 @@
 #ifndef entrega1
 #define entrega1
 
-#define fAlunos "Alunos.txt"
-#define fDisciplina "Disciplinas.txt"
-#define fRequisitos "Prerequisitos.txt"
-
 typedef struct usuariologado{
 long int ra;
 char nome[100];

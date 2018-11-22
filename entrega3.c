@@ -6,11 +6,12 @@
 #include "entrega2.h"
 #include "entrega21.h"
 #include "entrega3.h"
+#include "getSO.h"
 
 void menuHistoricoAluno()
 {
     char ra[20];
-    sprintf(ra,"%d.txt", user->ra);
+    sprintf(ra,"%ld%s", user->ra,EXT);
 
     FILE *fp;
     fp = fopen(ra,"w");

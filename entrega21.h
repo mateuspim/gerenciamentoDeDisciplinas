@@ -1,8 +1,6 @@
 #ifndef entrega21
 #define entrega21
 
-#define fAlunosD "AlunosDisciplinas.txt"
-
 #define cap 100  //Capacidade do vetor struct ntDisciplina inicial
 
 typedef struct discNotaFalta{

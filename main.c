@@ -7,6 +7,7 @@
 #include "entrega2.h"
 #include "entrega21.h"
 #include "entrega3.h"
+#include "getSO.h"
 
 void menu();
 
@@ -15,9 +16,10 @@ int main (int argc, char * argv)
 	int op, erro;
     
 	user = (usuarioLogado *) calloc(1,sizeof(usuarioLogado));
+	system(CLEAR);
     
 	printf("\nSistema de Gerencia de Disciplinas Semestrais\n\n");
-	
+
 	do
 	{
 		erro = fazerLogin(user);
@@ -25,6 +27,7 @@ int main (int argc, char * argv)
     
 	do
 	{	
+		system(CLEAR);
         printf("\nUsuario logado -> RA: %ld   Nome: %s\n\n",user->ra,user->nome);
 		menu();
 		scanf("%d",&op);

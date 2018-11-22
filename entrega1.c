@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 #include "entrega1.h"
-
+#include "getSO.h"
 
 void verificaDisciplina()
 {
@@ -23,7 +23,7 @@ void verificaDisciplina()
 
 	if (erro == 1)
 		puts("Disciplina nao registrada ou inexistente");
-	else if (erro == 0)
+	if (erro == 0)
 	{
 		printf("Nome: %s\n",nomeDisciplina);
 		printf("Quantidade de Creditos: %d\n",creditos);
