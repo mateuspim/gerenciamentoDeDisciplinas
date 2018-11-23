@@ -65,7 +65,7 @@ void menuRendimento(FILE *fp)
 
 //Funcao para inicializar usando malloc as structs
 void inicializaCoefRend()
-{
+{    
     free(cRend);
     cRend =   calloc(capAlunos,sizeof(cRendimento));
 
@@ -167,7 +167,7 @@ void writeDisciplinas(FILE *fp)
             {
 
                 //fprintf(fp,"\n\nSI200  		    7.1 	    10.4    	  Aprovado por Nota e Frequência\n"); //Exemplo de formatacao para pegar a tabulacao
-                fprintf(fp,"%s  		    %0.2f 	    %0.2f    	  ",novaNTD[i].disciplina,novaNTD[i].nota,novaNTD[i].faltas);
+                fprintf(fp,"%s  		    %0.2f 	%0.2f         ",novaNTD[i].disciplina,novaNTD[i].nota,novaNTD[i].faltas);
 
                 //Verifica os parametros de nota e falta para verificar se o aluno passou ou nao
                 /*  Condicoes:
