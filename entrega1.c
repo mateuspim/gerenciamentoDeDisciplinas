@@ -105,7 +105,7 @@ void cadastroAluno()
 		
 	if (fp == NULL)
 	{
-		puts("ERRO AO ABRIR ARQUIVO Alunos.txt");
+		printf("Nao foi possivel encontrar o arquivo %s\n",fAlunos);
 	}
 	else
 	{
@@ -170,7 +170,7 @@ int verificaAlunoRA(long int ra)
 	
 	if (fp==NULL)
 	{
-		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
+		printf("Nao foi possivel encontrar o arquivo %s\n",fAlunos);
 	}
 	else
 	{	
@@ -196,7 +196,7 @@ int verificaAlunoLogin(char *login)
 	
 	if (fp==NULL)
 	{
-		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
+		printf("Nao foi possivel encontrar o arquivo %s\n",fAlunos);
 	}
 	else
 	{	

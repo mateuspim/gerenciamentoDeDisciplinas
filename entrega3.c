@@ -41,10 +41,6 @@ void menuHistoricoAluno()
 
     fclose(fp);
     printf("\nArquivo %s foi gerado com sucesso!\n",ra);
-    
-    free(cRend);
-    free(crDesc);
-
 }
 
 void menuRendimento(FILE *fp)
@@ -70,14 +66,17 @@ void menuRendimento(FILE *fp)
 //Funcao para inicializar usando malloc as structs
 void inicializaCoefRend()
 {
+    cRend = NULL;
+    crDesc = NULL;
+    
     free(cRend);
-    cRend =   malloc(capAlunos * sizeof(cRendimento));
+    cRend =   calloc(capAlunos,sizeof(cRendimento));
 
     if(cRend==NULL)
         puts("FALHA NO MALLOC DO cRend");
 
     free(crDesc);
-    crDesc =    malloc(sizeof(crDescritor));
+    crDesc =    calloc(1,sizeof(crDescritor));
     
     if(crDesc==NULL)
         puts("FALHA NO MALLOC DO crDesc");
@@ -102,7 +101,7 @@ void addAlunosCoefRend()
 	
 	if (fp==NULL)
 	{
-		puts("NAO PODE ABRIR O ARQUIVO Alunos.txt");
+        printf("\nNao foi possivel abrir o arquivo %s",fAlunos);
 	}
 	else
 	{	
@@ -149,19 +148,18 @@ void calcCoefRend()
         else
             continue;
     }
-
 }
 
 void writeDisciplinas(FILE *fp)
 {
     //5* Todas as disciplinas que o aluno cursou devem aparecer em ordem semestral
-    quicksortNTDisc(novaNTD,0,novaDE->top - 1); //Deixar os semestres em ordem crescente
+    sortMatriculas(0); //Deixar os semestres && RAs em ordem crescente
     
     //printArray(); Verificacao da struct depois do sort
 
     if(fp==NULL)
     {
-        puts("ERRO AO ABRIR ARQUIVO: RAdoAluno.txtt");
+        printf("\nNao foi possivel continuar a utilizar o arquivo RAdoAluno.txt");
     }
     else
     {
@@ -214,6 +212,7 @@ void swapNTDisc(ntDisciplina *a, ntDisciplina *b)
 //quicksort usado para ordenar o array de registros dos alunos por semestre
 void quicksortNTDisc(ntDisciplina *arr, int l, int r)
 {
+
     if (l >= r)
     {
         return;
@@ -233,6 +232,31 @@ void quicksortNTDisc(ntDisciplina *arr, int l, int r)
 
     quicksortNTDisc(arr, l, cnt-2);
     quicksortNTDisc(arr, cnt, r);
+}
+
+//quicksort usado para ordenar o array de registros dos alunos por RA
+void quicksortNTDiscRA(ntDisciplina *arr, int l, int r)
+{
+    
+    if (l >= r)
+    {
+        return;
+    }
+
+    long int pivot = arr[r].ra;
+    int cnt = l;
+
+    for (int i = l; i <= r; i++)
+    {
+        if (arr[i].ra <= pivot)
+        {
+            swapNTDisc(&arr[cnt], &arr[i]);            
+            cnt++;
+        }
+    }
+
+    quicksortNTDiscRA(arr, l, cnt-2);
+    quicksortNTDiscRA(arr, cnt, r);
 }
 
 // funcao para printar os valores de cr dos alunos. Usado para verificacao
@@ -272,4 +296,29 @@ void quicksortCRend(cRendimento *arr, int l, int r)
 
     quicksortCRend(arr, l, cnt-2);
     quicksortCRend(arr, cnt, r);
+}
+
+void sortMatriculas(int op)
+{
+    if(op==1)
+    {
+        inicializaDiscNotaFalta();  //Inicializa ambas as structs
+        addDiscNotaFalta();         //Le o arquivo e adiciona para as structs
+    }
+
+   	quicksortNTDisc(novaNTD,0,novaDE->top - 1);
+	
+    int last = 0;
+    for (register int i = 0;i<novaDE->top;i++)
+    {
+        if(novaNTD[i].semestre != novaNTD[i+1].semestre)
+        {
+            quicksortNTDiscRA(novaNTD,last,i);
+            last = i+1;
+        }
+
+    }
+
+    if(op==1)
+        persisteDisciplinaStruct();
 }

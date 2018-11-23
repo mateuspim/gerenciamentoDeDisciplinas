@@ -25,6 +25,6 @@ int checkPreRequisitos(char * idDisciplina);
 void getDiscAnterior();
 void realizarMatricula();
 
-void sortMatriculas();
+
 
 #endif 

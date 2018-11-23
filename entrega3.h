@@ -25,6 +25,8 @@ void writeDisciplinas(FILE *fp);
 
 void swapNTDisc(ntDisciplina *a, ntDisciplina *b);
 void quicksortNTDisc(ntDisciplina arr[], int l, int r);
+void quicksortNTDiscRA(ntDisciplina arr[], int l, int r);
+void sortMatriculas(int op);
 void printArray();
 
 void addAlunosCoefRend();
@@ -35,5 +37,6 @@ void reallocCoefRend();
 void swapCRend(cRendimento *a, cRendimento *b);
 void quicksortCRend(cRendimento *arr, int l, int r);
 void printAlunos();
+
 
 #endif 

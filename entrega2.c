@@ -15,15 +15,6 @@ void inicializaDisciplina()
     novaD = (stDisciplina *) calloc(1,sizeof(stDisciplina));
 }
 
-void sortMatriculas()
-{
-    inicializaDiscNotaFalta();  //Inicializa ambas as structs
-    addDiscNotaFalta();         //Le o arquivo e adiciona para as structs
-
-    quicksortNTDisc(novaNTD,0,novaDE->top - 1);
-    persisteDisciplinaStruct();
-}
-
 //Funcao menu para matricula nas disciplinas
 void menuMatricula()
 {
@@ -33,9 +24,9 @@ void menuMatricula()
 
     //Inicializando struct disciplina para futuras verificacoes
     inicializaDisciplina();
+    printf("\nMatricula de Disciplinas\n");
 
-    puts("\nPara sair, digite XX000");
-    puts("Para nao fazer cadastro das disciplinas, digite NN000\n");
+    puts("\nPara sair, digite 0 ou valores negativos");
 
     do
     {
@@ -43,6 +34,12 @@ void menuMatricula()
     printf("Digite o semestre: ");
     scanf("%d",&novaD->semestre);
     getchar();
+
+    if(novaD->semestre<=0)
+    {
+        puts("\nTransacao suspensa com sucesso");
+        break;
+    }
 
     if (novaD->semestre<=0 ||  novaD->semestre>10)
     {
@@ -73,37 +70,42 @@ void menuMatricula()
         
     }while(erro!=0);
 
-    do
+    if (novaD->semestre>0 && novaD->semestre<11)
     {
+        puts("\nPara sair, digite XX000");
+        puts("Para nao fazer cadastro das disciplinas, digite NN000");
+
+        do
+        {
     
-    printf("\nDigite a disciplina: ");
-    fgets(disciplina,10,stdin);
-    limpaChar(disciplina);
-    upperChar(disciplina);
+        printf("\nDigite a disciplina: ");
+        fgets(disciplina,10,stdin);
+        limpaChar(disciplina);
+        upperChar(disciplina);
 
-    erro = 1;
+        erro = 1;
 
-    if (strcmp(disciplina,"XX000")==0)
-    {
-        realizarMatricula();
-        puts("\nTransacao efetuada com sucesso");
-        free(novaD);
-        erro = 0;
-    }
-    else if (strcmp(disciplina,"NN000")==0)
-    {
-        puts("\nTransacao suspensa com sucesso");
-        free(novaD);
-        erro = 0;
-    }
-    else
-    {
-        checkDisciplina(disciplina);
-    }    
+        if (strcmp(disciplina,"XX000")==0)
+        {
+            realizarMatricula();
+            puts("\nTransacao efetuada com sucesso");
+            free(novaD);
+            erro = 0;
+        }
+        else if (strcmp(disciplina,"NN000")==0)
+        {
+            puts("\nTransacao suspensa com sucesso");
+            free(novaD);
+           erro = 0;
+        }
+        else
+        {
+            checkDisciplina(disciplina);
+        }    
    
-    }while(erro!=0); 
+        }while(erro!=0);    
 
-    free(novaD);    
+    }
 }
 
 // Faz quase toda a vericacao para o cadastro da disciplina
@@ -195,7 +197,7 @@ int checkPreRequisitos(char * idDisciplina)
 
 	if(fp == NULL)
 	{
-		printf("\nNao foi possivel encontrar o arquivo: Prerequisitos.txt\n");
+		printf("\nNao foi possivel encontrar o arquivo %s\n",fRequisitos);
 	}
     else
     {
@@ -241,7 +243,7 @@ int checkAlunoDisciplinas(char *idRequisito)
 
     if (fp == NULL)
     {
-            puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas.txt");
+        printf("\nNao foi possivel encontrar o arquivo %s",fAlunosD);
     }
     else
     {   
@@ -274,7 +276,7 @@ void getDiscAnterior()
 
     if (fp==NULL)
     {
-        puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas.txt");
+        printf("\nNao foi possivel encontrar o arquivo %s",fAlunosD);
     }
     else
     {
@@ -365,6 +367,7 @@ void realizarMatricula()
             fflush(fp);
         }
     }
-
 	fclose(fp); 
+    
+    sortMatriculas(1); //Deixar os semestres && RAs em ordem crescente
 }

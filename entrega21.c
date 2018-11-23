@@ -5,6 +5,7 @@
 #include "entrega1.h"
 #include "entrega2.h"
 #include "entrega21.h"
+#include "entrega3.h"
 #include "getSO.h"
 
 void menuAlterarNotaFalta()
@@ -19,7 +20,6 @@ void menuAlterarNotaFalta()
 
     puts("\nMenu alterar nota e falta\n");
     puts("Para sair, digite 0 ou valores negativos");
-    puts("Para sair, digite XX000");
     
     do // do enquanto n mostrar disciplinas
     {
@@ -52,8 +52,8 @@ void menuAlterarNotaFalta()
 
     if (semestre > 0 && semestre < 11)
     {
-    
-        printf("\nDigite o codigo da disciplina que deseja fazer a alteracao: ");
+        puts("\nPara sair, digite XX000");
+        printf("Digite o codigo da disciplina que deseja fazer a alteracao: ");
 
         fgets(disciplina,10,stdin);
         limpaChar(disciplina);
@@ -110,7 +110,7 @@ void persisteDisciplinaStruct()
 
     if (fp==NULL)
     {
-        puts("\nNao foi possivel encontrar o arquivo AlunosDisciplinas");
+        printf("\nNao foi possivel encontrar o arquivo %s",fAlunosD);
     }
     else
     {
@@ -143,13 +143,11 @@ void modifyDisciplinaStruct(char *disciplina,int semestre,float nota,float falta
 //Funcao que verifica se existe a disciplina dentro do semestre escolhido para o usuario logado
 int verificaDisciplinaStruct(char *disciplina,int semestre)
 {
-        for(register int i = 0;i<novaDE->top;i++)
-        {
-            if (strcmp(disciplina,novaNTD[i].disciplina)==0 && novaNTD[i].semestre==semestre && user->ra == novaNTD[i].ra)
-            {
+    for(register int i = 0;i<novaDE->top;i++)
+    {
+        if (strcmp(disciplina,novaNTD[i].disciplina)==0 && novaNTD[i].semestre==semestre && user->ra == novaNTD[i].ra)
                 return 0;
-            }
-        }
+    }
 
     return 1;
 }
@@ -158,13 +156,13 @@ int verificaDisciplinaStruct(char *disciplina,int semestre)
 void inicializaDiscNotaFalta()
 {
     free(novaNTD);
-    novaNTD =   malloc(cap * sizeof(ntDisciplina));
+    novaNTD =   calloc(cap,sizeof(ntDisciplina));
 
     if(novaNTD==NULL)
         puts("FALHA NO MALLOC DO novaNTD");
 
     free(novaDE);
-    novaDE =    malloc(sizeof(ntDescritor));
+    novaDE =    calloc(1,sizeof(ntDescritor));
     
     if(novaDE==NULL)
         puts("FALHA NO MALLOC DO novaDE");

@@ -29,6 +29,7 @@ int main (int argc, char * argv)
 	do
 	{	
 		system(CLEAR);
+		printf("\nSistema de Gerencia de Disciplinas Semestrais\n");
         printf("\nUsuario logado -> RA: %ld   Nome: %s\n\n",user->ra,user->nome);
 		menu();
 		scanf("%d",&op);
@@ -58,7 +59,8 @@ int main (int argc, char * argv)
 			case 6:
 				break;
 			case 17:
-				sortMatriculas();
+				sortMatriculas(1);
+				printWait();
 				break;
 			default:
 				puts("\nOpcao Invalida!!!");
@@ -84,6 +86,7 @@ printf("\nDigite a opcao desejada: ");
 void printWait()
 {
 	printf("\nPressione Enter para continuar . . . ");
-	getchar();
-	fflush(stdin);
+	while( getchar() != '\n');
 }
+
+    
