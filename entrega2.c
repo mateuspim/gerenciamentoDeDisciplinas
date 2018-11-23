@@ -89,13 +89,11 @@ void menuMatricula()
         {
             realizarMatricula();
             puts("\nTransacao efetuada com sucesso");
-            free(novaD);
             erro = 0;
         }
         else if (strcmp(disciplina,"NN000")==0)
         {
             puts("\nTransacao suspensa com sucesso");
-            free(novaD);
            erro = 0;
         }
         else
