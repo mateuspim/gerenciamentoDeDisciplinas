@@ -66,9 +66,6 @@ void menuRendimento(FILE *fp)
 //Funcao para inicializar usando malloc as structs
 void inicializaCoefRend()
 {
-    cRend = NULL;
-    crDesc = NULL;
-    
     free(cRend);
     cRend =   calloc(capAlunos,sizeof(cRendimento));
 
