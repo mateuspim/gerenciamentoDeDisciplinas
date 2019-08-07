@@ -1,4 +1,4 @@
-# gerenciamentoDeDisciplinas
+# Gerenciamento de Disciplinas
 <b>OBJETIVO:</b><br>
 Este projeto consiste na elaboração de um sistema responsável por gerenciar as matrículas dos alunos nas disciplinas de um determinado semestre. Além disso, o sistema será responsável por gerenciar as notas dos alunos, os pré-requisitos necessários para cursar uma dada disciplina, e também a geração de coeficientes, como rendimento e padrão.
 <br>
